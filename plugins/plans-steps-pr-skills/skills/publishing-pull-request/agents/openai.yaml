@@ -1,0 +1,6 @@
+interface:
+  display_name: "Draft PR Publisher"
+  short_description: "Publishes verified branches as readable Draft PRs"
+  default_prompt: "Use $publishing-pull-request to publish this verified branch as a Draft PR with the standard evidence format."
+policy:
+  allow_implicit_invocation: false

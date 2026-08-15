@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verified Local Commit"
+  short_description: "Commits only verified and intentional changes"
+  default_prompt: "Use $committing-verified-work to create intentional local commits from the verified task changes."
+policy:
+  allow_implicit_invocation: false

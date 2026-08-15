@@ -1,0 +1,6 @@
+interface:
+  display_name: "Implementation Record"
+  short_description: "Writes evidence-based implementation reports"
+  default_prompt: "Use $recording-implementation to document this completed change from its diff and verification evidence."
+policy:
+  allow_implicit_invocation: true

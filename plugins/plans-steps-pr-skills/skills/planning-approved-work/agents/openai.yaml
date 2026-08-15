@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Approval Gate"
+  short_description: "Creates approval-bound implementation plans"
+  default_prompt: "Use $planning-approved-work to inspect this project and write an approval-gated plan."
+policy:
+  allow_implicit_invocation: true

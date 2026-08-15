@@ -1,0 +1,6 @@
+interface:
+  display_name: "Risk-Scaled Implementation"
+  short_description: "Implements approved work with scoped checks"
+  default_prompt: "Use $implementing-with-risk-checks to implement this approved scope with risk-scaled verification."
+policy:
+  allow_implicit_invocation: false

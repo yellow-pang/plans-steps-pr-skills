@@ -1,0 +1,29 @@
+{
+  "name": "plans-steps-pr-skills",
+  "version": "2.0.0",
+  "description": "Approval-gated development workflow with risk-scaled verification, implementation records, commits, and pull requests.",
+  "author": {
+    "name": "yellow-pang",
+    "url": "https://github.com/yellow-pang"
+  },
+  "homepage": "https://github.com/yellow-pang/plans-steps-pr-skills",
+  "repository": "https://github.com/yellow-pang/plans-steps-pr-skills",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "development-workflow",
+    "planning",
+    "verification",
+    "pull-request"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Gated Development Workflow",
+    "shortDescription": "Approval gates with risk-scaled development checks",
+    "longDescription": "Plan, implement, document, commit, publish, and review changes through explicit approval gates and evidence-based verification.",
+    "developerName": "yellow-pang",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "이 기능을 계획부터 검증 가능한 구현 기록과 Draft PR까지 안전하게 진행해줘."
+  }
+}

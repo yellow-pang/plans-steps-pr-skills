@@ -1,0 +1,6 @@
+interface:
+  display_name: "Independent PR Validator"
+  short_description: "Reviews PR evidence without approving or merging"
+  default_prompt: "Use $validating-pull-request to independently validate this PR from its Plan, Steps, diff, and test evidence."
+policy:
+  allow_implicit_invocation: true
