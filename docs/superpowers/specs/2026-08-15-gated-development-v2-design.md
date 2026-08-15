@@ -274,14 +274,14 @@ manifest는 Skill만 선언한다. `.mcp.json`, `.app.json`, hook이 없으므�
 | Skill | implicit | 이유 |
 |---|---:|---|
 | `running-gated-development` | true | 전체 흐름 진입점 |
-| `planning-approved-work` | true | 계획만 요청할 때 직접 발견 |
+| `planning-approved-work` | true | 계획 요청과 FORMAL 미승인 경계에서 직접 발견 |
 | `implementing-with-risk-checks` | false | 승인 확인 없는 넓은 mutation 방지 |
-| `recording-implementation` | true | Steps 요청 직접 처리 |
+| `recording-implementation` | true | 검증된 작업의 Steps 요청에서 직접 발견 |
 | `committing-verified-work` | false | local commit도 명시 권한 필요 |
 | `publishing-pull-request` | false | push와 PR은 외부 상태 변경 |
-| `validating-pull-request` | true | 독립 검토 요청 직접 처리 |
+| `validating-pull-request` | true | PR 또는 branch 검토 요청에서 직접 발견 |
 
-`allow_implicit_invocation: false`인 Skill도 명시적 `$skill-name` 호출은 가능하다. 총괄에서 전문 Skill을 명시적으로 선택하는 동작은 local smoke test에서 검증하며, 지원되지 않는 호스트는 specialist description을 좁게 유지한 채 정책을 packaging layer에서 조정한다.
+`allow_implicit_invocation: false`인 Skill도 사용자의 `$skill-name` 호출에서는 발견된다. Gate 2 실패만으로 specialist 경쟁을 원인으로 확정하지 않으며, 총괄이 explicit-only specialist를 동적으로 로드한다고 가정하지 않는다. 총괄은 route-only 응답에서 `DISCUSS | QUICK | FORMAL`, `R0 | R1 | R2 | R3`, bundled specialist 또는 `none`, 한 문장 Decision의 네 필드 positive contract를 적용한다.
 
 ## 10. 검증 시나리오
 
@@ -289,6 +289,8 @@ manifest는 Skill만 선언한다. `.mcp.json`, `.app.json`, hook이 없으므�
 
 - 질문만 했는데 파일을 수정하지 않는가
 - 사용자가 QUICK을 요청했지만 dependency 변경 R2이면 FORMAL로 올리는가
+- 명시 호출된 총괄이 OAuth dependency와 인증 API 변경을 FORMAL, R3, `planning-approved-work`로 라우팅하는가
+- Skill 이름 없는 동일 요청에서 총괄 discovery와 승인 전 중단이 관찰되는가
 - 승인 없는 FORMAL Plan으로 구현하지 않는가
 - 승인 메시지 없이 frontmatter만 APPROVED로 바꾸지 않는가
 - Plan에 없던 dependency가 필요하면 `REAPPROVAL_REQUIRED`로 멈추는가

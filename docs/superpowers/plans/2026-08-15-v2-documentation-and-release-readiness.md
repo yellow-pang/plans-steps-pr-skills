@@ -150,7 +150,7 @@
 - Modify: `docs/steps/2026-08-15-gated-development-v2.md`
 
 **Interfaces:**
-- Consumes: 설치된 Plugin, 10개 pressure scenario, `agents/openai.yaml` 호출 정책.
+- Consumes: 설치된 Plugin, 12개 pressure scenario, `agents/openai.yaml` 호출 정책.
 - Produces: Skill 없음/있음 비교와 총괄→전문 Skill 라우팅의 행동 증거.
 
 - [ ] **Step 1: scenario 실행 메타데이터 확정**
@@ -159,19 +159,21 @@
 
 - [ ] **Step 2: 각 scenario를 Skill 없이 fresh context에서 실행**
 
-  10개 입력을 서로 상태를 공유하지 않는 새 작업에서 실행한다. 원본 prompt와 응답을 `raw/`에 scenario id별 Markdown으로 보존하고 baseline의 실제 위반과 통과를 평가한다.
+  12개 입력을 서로 상태를 공유하지 않는 새 작업에서 실행한다. 원본 prompt와 응답을 `raw/`에 scenario id별 Markdown으로 보존하고 baseline의 실제 위반과 통과를 평가한다.
 
 - [ ] **Step 3: 각 scenario를 설치된 Plugin과 함께 fresh context에서 실행**
 
-  동일한 10개 입력을 새 작업에서 Plugin을 활성화해 실행한다. 기대 답을 prompt에 넣지 않고, 각 expected 항목이 출력과 실제 mutation 경계에서 관찰됐는지 기록한다.
+  동일한 12개 입력을 새 작업에서 Plugin을 활성화해 실행한다. 기대 답을 prompt에 넣지 않고, 각 expected 항목이 출력과 실제 mutation 경계에서 관찰됐는지 기록한다.
 
 - [ ] **Step 4: 명시 호출과 암묵 호출 경계 확인**
 
-  총괄 Skill이 mutation 전문 Skill을 명시적으로 선택하는지 확인한다. `allow_implicit_invocation: false`인 구현·commit·PR Skill이 일반 요청에서 단독 암묵 호출되지 않고, `$skill-name` 직접 호출에서는 발견되는지 기록한다.
+  총괄 명시 호출에서 routing contract를 먼저 확인하고, Skill 이름 없는 동일 입력에서 discovery를 별도로 확인한다. planning, recording, validating의 implicit 정책은 원래 설계를 유지하며 경쟁 여부는 관찰 결과 없이 결론내리지 않는다. 구현·commit·PR 게시 Skill은 일반 요청에서 단독 암묵 호출되지 않고 `$skill-name` 직접 호출에서 발견되는지 기록한다.
 
 - [ ] **Step 5: 행동 verdict 기록**
 
-  20회 원본 실행을 기준으로 scenario별 `PASS`, `FAIL`, `BLOCKED_ENVIRONMENT` 중 하나를 기록한다. 하나라도 FAIL 또는 BLOCKED이면 `behavioral_run`을 `passed`로 바꾸지 않는다.
+  24회 원본 실행을 기준으로 scenario별 `PASS`, `FAIL`, `BLOCKED_ENVIRONMENT` 중 하나를 기록한다. 하나라도 FAIL 또는 BLOCKED이면 `behavioral_run`을 `passed`로 바꾸지 않는다. Gate 2 수정 후보는 explicit Spark 1회, 통과 시 implicit Spark 1회만 실행하고 전체 24회 release 평가에는 별도 비용 승인을 받는다.
+
+  2026-08-15 single-implicit 후보의 첫 Spark는 stale 설치 cache 때문에 무효였고, cachebuster 재설치 뒤 Spark도 실패했다. 이 결과는 discovery를 의심하게 하지만 single-implicit 또는 Skill 경쟁을 근본 원인으로 확정하지 않는다. contract-only 후보의 explicit loaded-body contract는 24,602토큰으로 GREEN이 됐지만, implicit discovery는 61,758토큰을 사용하고 라우팅 대신 차단된 patch와 Skill 수정안을 내어 FAIL이었다. Gate 2는 `CHANGES_REQUIRED`이며 fail-fast에 따라 추가 모델 실행과 전체 회귀를 중단한다.
 
 ### Task 5: standalone Skill 설치 Gate
 
@@ -226,7 +228,7 @@
 
 - [ ] **Step 4: release verdict 갱신**
 
-  Plugin 설치, 7개 Skill 노출, 호출 정책, 10개 pressure scenario, standalone 설치, GitHub Actions가 모두 실제 증거로 통과한 경우에만 README의 사전-release 경고를 release-ready 표현으로 변경한다. 그 외에는 미완료 Gate와 다음 행동을 그대로 유지한다.
+  Plugin 설치, 7개 Skill 노출, 호출 정책, 12개 pressure scenario, standalone 설치, GitHub Actions가 모두 실제 증거로 통과한 경우에만 README의 사전-release 경고를 release-ready 표현으로 변경한다. 그 외에는 미완료 Gate와 다음 행동을 그대로 유지한다.
 
 - [ ] **Step 5: 최종 검증**
 

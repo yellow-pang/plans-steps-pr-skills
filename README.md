@@ -4,7 +4,7 @@ Approval-gated Agent Skills for planning, risk-scaled implementation, readable i
 
 간단한 수정에는 가볍고, 위험한 변경에는 승인과 검증을 강화하는 개인 개발 워크플로입니다. 방향만 받은 에이전트가 프로젝트를 조사해 Plan을 만들고, 사용자가 승인한 범위와 완료 지점 안에서 구현·Steps·commit·Draft PR·검토를 연결합니다.
 
-> 현재 v2는 로컬 구조·script·schema 계약과 Plugin 설치·기본 DISCUSS 호출 smoke를 통과했습니다. 전체 fresh-context pressure scenario, standalone 설치, 실제 GitHub Actions를 통과한 뒤 release-ready로 표시합니다.
+> 현재 v2는 로컬 구조·script·schema 계약과 Plugin 설치·기본 DISCUSS 직접 호출 smoke를 통과했습니다. Gate 2는 contract와 discovery를 분리해 다시 검증 중이며, 전체 fresh-context pressure scenario, standalone 설치, 실제 GitHub Actions를 통과한 뒤 release-ready로 표시합니다.
 
 ## 만든 이유
 
@@ -70,7 +70,7 @@ Mode는 워크플로 비용이고 Risk는 실패 영향입니다. 둘은 독립�
 | `publishing-pull-request` | push와 고정 양식 Draft PR | 끔 |
 | `validating-pull-request` | Plan·Steps·diff·CI 독립 검토 | 켬 |
 
-쓰기 권한이 큰 Skill은 `agents/openai.yaml`에서 암묵 호출을 끕니다. 총괄 또는 사용자의 명시적 `$skill-name` 호출로만 실행합니다.
+총괄과 읽기·기록 중심 specialist는 자연어 요청에서 발견될 수 있습니다. 구현·commit·PR 게시처럼 쓰기 권한이 큰 세 Skill은 암묵 호출을 끄고 사용자의 `$skill-name` 호출이나 확인된 gate 전환 뒤에만 사용합니다. 총괄은 route-only 응답에서 `Mode`, `Risk`, bundled `Next skill`, `Decision`의 네 필드 계약을 사용합니다.
 
 ## 설치
 

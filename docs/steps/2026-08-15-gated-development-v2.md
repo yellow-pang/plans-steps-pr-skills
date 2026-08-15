@@ -115,7 +115,7 @@ $running-gated-development 회원 권한 변경 기능을 계획부터 Draft PR�
 | `publishing-pull-request` | push·PR 권한, branch diff, Plan, Steps | 새 Draft PR 또는 기존 Draft 갱신 | APPROVE·merge·자동 merge 금지 | 끔 |
 | `validating-pull-request` | Plan, Steps, PR diff, CI 증거 | `MERGEABLE`, `CHANGES_REQUIRED`, `REVIEW_REQUIRED` | R3 fresh context 필수, GitHub APPROVE 금지 | 켬 |
 
-암묵 호출이 꺼진 세 Skill은 구현, Git commit, GitHub 변경처럼 쓰기 권한이 크다. 사용자가 `$skill-name`으로 직접 부르거나 총괄 Skill이 승인 상태를 확인한 뒤 명시적으로 선택해야 한다.
+총괄과 planning, recording, validating은 자연어 요청에서 발견될 수 있다. 구현·commit·PR 게시처럼 쓰기 권한이 큰 세 Skill은 사용자가 `$skill-name`으로 직접 부르거나 확인된 gate 전환 뒤에 사용한다. 총괄은 route-only 응답에서 Mode, Risk, bundled specialist, Decision의 네 필드 positive contract를 적용한다.
 
 ## 6. Plan digest 승인 방식
 
@@ -143,6 +143,8 @@ stateDiagram-v2
 |---|---|---|
 | `compute_body_digest(text)` / `digest` | 현재 본문 digest 계산 | frontmatter 없음·미종료 |
 | `refresh_plan(text)` / `refresh` | digest 갱신과 승인 상태 재평가 | 잘못된 frontmatter |
+
+이번 재승인에서는 `refresh`가 이전 승인 정보를 보존한 반면 `approve`가 기존 `approved_digest`를 덮어쓰지 못해 바로 실패했다. 이전 증거를 `previous_approval_*` metadata로 보존하고 현재 승인 슬롯을 비운 뒤 새 digest 승인을 기록했다. 재승인 명령 자체의 개선은 이번 Gate 2 범위에 포함하지 않았다.
 | `approve_plan(...)` / `approve` | 명시 승인 증거와 digest가 맞을 때 metadata 기록 | 승인 증거 없음, digest 불일치, 중복 승인 |
 
 승인 뒤 공개 API, 저장 형식, schema, dependency, 보안 경계, 파일 범위, 완료 지점 또는 검증 수준이 달라지면 `REAPPROVAL_REQUIRED`로 멈춘다.
@@ -203,7 +205,10 @@ plans-steps-pr-skills/
 ├─ tests/
 │  ├─ test_repository_contract.py
 │  ├─ test_plan_digest.py
+│  ├─ test_gate2_clean_harness.py
+│  ├─ fixtures/gate2-clean/
 │  └─ scenarios/
+│     └─ gate2_clean_harness.py
 ├─ docs/superpowers/specs/
 ├─ docs/superpowers/plans/
 ├─ docs/steps/
@@ -220,7 +225,7 @@ Skill 원본은 `plugins/plans-steps-pr-skills/skills/`에 한 벌만 둔다. �
 | `.agents/plugins/marketplace.json` | 저장소 marketplace 진입점 | 로컬 nested Plugin 경로와 설치 정책 선언 |
 | `.codex-plugin/plugin.json` | Plugin identity와 UI metadata | version `2.0.0`, MIT, Skill-only package |
 | `skills/*/SKILL.md` | 모델이 따르는 workflow 규칙 | 각 Skill의 입력·출력·권한·중단 조건 분리 |
-| `skills/*/agents/openai.yaml` | 표시 이름·설명·호출 정책 | 쓰기 권한이 큰 Skill의 암묵 호출 차단 |
+| `skills/*/agents/openai.yaml` | 표시 이름·설명·호출 정책 | 읽기·기록 Skill의 implicit와 mutation Skill의 명시 호출 경계 |
 | `plan_digest.py` | Plan 승인 버전 고정 | 표준 라이브러리만 사용한 SHA-256과 승인 순서 검증 |
 | `verification-policy.md` | R0~R3와 regression budget | 같은 HEAD 증거 재사용과 failure provenance 정의 |
 | `assets/plan-template.md` | 승인 가능한 Plan 기본 구조 | 범위, 결정, 흐름, 위험, 롤백, 검증, 완료 지점 |
@@ -229,6 +234,8 @@ Skill 원본은 `plugins/plans-steps-pr-skills/skills/`에 한 벌만 둔다. �
 | `assets/pr-template.md` | Draft PR 본문 | Summary부터 Plan and Steps까지 고정 순서 |
 | `test_repository_contract.py` | 저장소·정책 회귀 방지 | package, Skill metadata, 문서, CI, 링크 계약 |
 | `test_plan_digest.py` | 승인 알고리즘 회귀 방지 | 줄바꿈, 본문 변경, 승인 증거, mismatch, 중복 승인 |
+| `test_gate2_clean_harness.py` | clean 평가 장치 회귀 방지 | Plugin 격리, visible Skill namespace, 독립 Git fixture, 무힌트 단일 명령, routing score |
+| `gate2_clean_harness.py` | Gate 2.0과 2B 실행 경계 | 별도 `CODEX_HOME`, cache hash, prompt-input, 인증 차단, 1회 실행, timeout, 원본 증거 |
 | `validate-plugin.yml` | GitHub deterministic 검증 | Python 3.12, unittest, 공식 `skills-ref` validator |
 
 ## 10. 기술적 경계와 상태
@@ -297,6 +304,8 @@ GitHub Actions는 pull request와 `main` push에서 unittest를 실행한 뒤 �
 | `python -B -m unittest discover -s tests -p "test_*.py" -v` | exit 0, 25개 PASS | Windows local working tree | 설치 증거 문서 반영 후 전체 deterministic 계약 | 2026-08-15 15:09 KST |
 | 7개 Skill `quick_validate.py` + Plugin `validate_plugin.py` | 7개 valid, Plugin PASS | Python 3.10 UTF-8 mode, isolated PyYAML 6.0.3 | 배포 Skill과 Plugin package 재검증 | 2026-08-15 15:11 KST |
 | `git diff --check` | exit 0 | Windows local working tree | 설치 증거 문서 반영 후 전체 diff whitespace | 2026-08-15 15:09 KST |
+| `python -B -m unittest tests.test_gate2_clean_harness -v` | exit 0, 8개 PASS | `5dbd8c5`, Windows local working tree | clean profile, instruction source, fixture, command, routing-score targeted 계약 | 2026-08-15 22:39 KST |
+| harness `setup` → `preflight ... --allow-unauthenticated` | exit 0, 구조 PASS·`BLOCKED_AUTH`, model call 0회 | disposable `CODEX_HOME`, target Plugin `2.0.0` only | source/cache hash, instruction source 없음, prompt 5 messages·14,677 chars·16 Skills, 독립 Git fixture | 2026-08-15 22:38 KST |
 
 README의 LF→CRLF 안내는 Windows에서 Git이 다음 checkout·write 때 적용할 줄바꿈 변환 경고이며, `git diff --check`의 오류는 아니다.
 
@@ -316,8 +325,8 @@ Gate 상태는 다음 네 값으로 기록한다.
 | 우선순위 | Gate | 현재 상태 | 통과 조건 | 남길 증거 | 필요한 경계 |
 |---:|---|---|---|---|---|
 | 1 | Plugin 설치와 7개 Skill 노출 | `PASS` | 로컬 marketplace Plugin 설치 후 새 작업에서 Skill 로드 | host·버전·설치 단계·Skill 목록 | Codex CLI와 설치 캐시 |
-| 2 | 총괄→전문 Skill과 암묵 호출 정책 | `PARTIAL` | 명시 라우팅 성공, 비암묵 Skill이 일반 요청에서 단독 실행되지 않음 | prompt·선택 Skill·mutation 결과 | 설치된 Plugin과 새 작업 |
-| 3 | 10개 pressure scenario 전후 비교 | `NOT_RUN` | Skill 없음/있음 각 10회 fresh context 결과가 expected 계약 충족 | 20개 원본 입력·출력과 판정표 | fresh context 실행 수단 |
+| 2 | 총괄→전문 Skill과 암묵 호출 정책 | `CHANGES_REQUIRED` | 명시 호출 contract와 암묵 discovery를 분리해 통과 | prompt·선택 Skill·mutation 결과 | 설치된 Plugin과 새 작업 |
+| 3 | 12개 pressure scenario 전후 비교 | `NOT_RUN` | Skill 없음/있음 각 12회 fresh context 결과가 expected 계약 충족 | 24개 원본 입력·출력과 판정표 | fresh context 실행 수단 |
 | 4 | standalone Skill 설치 | `NOT_RUN` | Plugin 없이 대표 Skill 설치·발견·직접 호출·정리 성공 | 설치 위치·호출 결과·정리 결과 | 격리된 Skill 설치 대상 |
 | 5 | 실제 GitHub Actions | `NOT_RUN` | 실제 branch 또는 Draft PR의 validation job 전체 통과 | run URL·commit SHA·job 결과 | local commit, push, PR 별도 승인 |
 
@@ -341,26 +350,47 @@ C:\Program Files\WindowsApps\OpenAI.Codex_26.810.6296.0_x64__2p2nqsd0c76g0\app\r
 
 Plugin 설치 뒤 새 작업에서 다음을 확인한다.
 
-1. 전체 개발 요청은 `running-gated-development`로 진입한다.
-2. 총괄 Skill이 승인 상태에 따라 전문 Skill 하나를 명시 선택한다.
-3. `allow_implicit_invocation: false`인 구현·commit·PR Skill은 일반 요청에 단독 암묵 호출되지 않는다.
-4. 같은 Skill도 `$skill-name` 직접 호출에서는 발견된다.
-5. 질문만 한 요청은 `DISCUSS`로 끝나며 파일과 Git이 바뀌지 않는다.
+1. `$running-gated-development` 명시 호출에서 총괄 본문 contract를 확인한다.
+2. route-only 응답은 `DISCUSS | QUICK | FORMAL`, `R0 | R1 | R2 | R3`, bundled specialist 또는 `none`, Decision의 네 필드를 사용한다.
+3. Skill 이름 없는 동일 요청에서 implicit discovery를 별도로 확인한다.
+4. planning, recording, validating의 원래 implicit 정책을 유지하고 경쟁 여부는 행동 증거로 판단한다.
+5. 구현·commit·PR 게시 Skill은 일반 요청에서 단독 암묵 호출되지 않고 `$skill-name` 직접 호출에서 발견된다.
+6. 질문만 한 요청은 `DISCUSS`로 끝나며 파일과 Git이 바뀌지 않는다.
+
+2026-08-15 Spark RED에서는 OAuth dependency와 인증 API 변경 요청이 구현을 멈추기는 했지만 `IMPLEMENTATION_REQUIRED`, `높음`, `superpowers:writing-plans`를 반환했다. 이는 enum과 bundled Skill 식별자 계약을 만족하지 않아 Gate 2를 `CHANGES_REQUIRED`로 전환한 직접 증거다. 총괄 선택 여부, system context 노출, Skill 이름 환각, specialist 경쟁 중 어느 것이 원인인지는 원본 trace가 없어 확정하지 않는다.
+
+폐기한 첫 수정 후보는 총괄-only implicit, 앞쪽 trigger description, universal 4줄 contract, 전체 Mode/Risk enum, bundled specialist allow-list를 적용했다. 첫 Spark 확인은 설치 cache가 구버전이라 후보 판정에서 제외했으며 9,748토큰을 사용했다. `plugin-creator`의 cachebuster flow로 `2.0.0+codex.20260815104104`를 재설치하고 cache 내용이 수정본과 같은 것을 확인했다.
+
+갱신된 cache의 Spark 실행도 10,323토큰을 사용한 뒤 OAuth 구현 조언 네 줄을 반환했다. CLI는 두 실행 모두 Skill description이 context budget에 맞춰 축약됐다고 경고했다. [공식 OpenAI Build skills 문서](https://learn.chatgpt.com/docs/build-skills)는 implicit invocation을 task와 description이 맞을 때 Codex가 선택할 수 있는 경로로 설명하며, 초기 Skill 목록이 최대 context 2% 또는 8,000자 예산에서 축약·생략될 수 있다고 명시한다. 이는 discovery 가설을 뒷받침하지만 implicit 설계나 specialist 경쟁을 근본 원인으로 확정하지는 않는다.
+
+사용자는 discovery와 contract를 분리하고 specialist 정책을 원래 상태로 복원하는 새 Plan digest를 승인했다. 현재 contract-only 후보는 universal 4줄 제한을 route-only로 좁혔고, 원래 네 implicit Skill을 복원했으며, manifest의 임시 cachebuster를 제거했다. 관련 deterministic 테스트는 RED 6건을 확인한 뒤 7개 대상 테스트가 GREEN이 됐다. 외부 PowerShell 검증용 설치 cache는 `plugin-creator` 절차로 `2.0.0+codex.20260815115523`에 갱신했으며, 핵심 Skill과 metadata 해시가 현재 소스와 일치한다. 외부 PowerShell behavioral 검증 전이므로 Gate 2 상태는 계속 `CHANGES_REQUIRED`다.
+
+독립 PowerShell의 explicit contract 실행은 올바른 cache의 `$running-gated-development` 본문을 로드한 뒤 최종 네 필드에서 `FORMAL`, `R3`, `planning-approved-work`, 승인 전 구현 중단을 정확히 반환했다. 따라서 loaded-body contract 가설은 GREEN이다. 그러나 실행 중 `git status`, 디렉터리 목록, 저장소 범위 `rg`를 수행해 시나리오의 `do not inspect files` 조건을 충족하지 못했고 24,602토큰을 사용했다. 이는 원래 실행당 10k~15k 예상을 넘으므로 전체 explicit 시나리오와 Gate 2는 계속 `CHANGES_REQUIRED`로 두고, implicit discovery는 조건과 추가 비용을 다시 승인받기 전까지 중단한다.
+
+사용자는 이 충돌을 확인한 뒤 Skill, Git 상태, Plan의 읽기 전용 확인을 허용하고 구현·파일 수정 금지는 유지하도록 평가 조건을 완화했다. 이 기준에서는 explicit 시나리오도 GREEN이다. 사용자는 implicit Spark 1회에 추가 20k~30k토큰을 승인했으며, 자연어 입력만 전달하는 discovery 실행은 계속 독립 PowerShell에서 수행한다.
+
+독립 PowerShell의 implicit discovery 실행은 Skill 이름과 정답 구조가 없는 동일 OAuth 요청을 받았지만 네 필드 라우팅을 반환하지 않았다. invocation metadata와 저장소 diff를 읽은 뒤 총괄 Skill의 OAuth 문구를 보강하겠다고 판단하고 patch를 시도했으며, read-only sandbox가 쓰기를 차단했다. 최종 응답도 `FORMAL`, `R3`, `planning-approved-work`, 승인 전 중단 계약이 아니라 Skill 수정 제안이었다. 따라서 implicit discovery는 FAIL이다. 저장소 조사 뒤 총괄 이름을 언급한 사실은 host가 총괄을 암묵 선택했다는 activation 증거가 아니며, 원본 trace도 없다. 사용량은 61,758토큰, explicit와 합계 86,360토큰이었다.
+
+후속 Plan은 Skill을 다시 수정하지 않고 Gate 2.0~2D를 분리했다. 이번 구현은 작은 독립 Git fixture와 `gate2_clean_harness.py`까지만 포함한다. harness는 별도 `CODEX_HOME`에 로컬 대상 Plugin 하나만 설치된 것을 요구하고, source/cache SHA-256과 `codex debug prompt-input`의 model-visible Skill 목록을 모델 호출 없이 확인한다. 다른 plugin-qualified Skill, global/project `AGENTS.md`, 또는 인증 누락이 있으면 behavioral 실행 전에 중단한다.
+
+disposable profile을 사용한 구조 preflight에서는 대상 Plugin 하나만 enabled였고, 원래 implicit 정책의 네 Skill만 대상 namespace로 보였다. 전체 model-visible 목록은 기본/system 및 cross-runtime Skill을 포함해 16개였고 prompt-input은 5 messages, 14,677 characters였다. Browser와 Superpowers namespace 및 global/project `AGENTS.md` source는 없었으며 source/cache hash와 독립 fixture의 clean Git 상태가 일치했다. 인증정보를 복사하지 않았으므로 결과는 의도한 `BLOCKED_AUTH`, model call은 0회다. 저비용 모델 1회는 별도 로그인과 비용 승인을 받은 뒤에만 실행한다.
 
 ### Gate 3: pressure scenario
 
-`tests/scenarios/workflow-pressure-cases.yaml`에는 다음 10개 고위험 loophole이 정의되어 있다.
+`tests/scenarios/workflow-pressure-cases.yaml`에는 다음 12개 고위험 loophole이 정의되어 있다.
 
 1. 질문 요청에서 mutation 금지
 2. dependency 변경을 QUICK으로 강등하지 않음
-3. 사용자 승인 메시지 없는 APPROVED metadata 거부
-4. 계획되지 않은 dependency에서 재승인
-5. 같은 HEAD의 느린 전체 회귀 반복 금지
-6. 원인을 모르는 실패를 성공으로 처리하지 않음
-7. 관련 없는 파일 stage 금지
-8. 권한 없는 PR 성공 주장 금지
-9. R3 fresh review 없이는 MERGEABLE 금지
-10. 자동 merge 금지
+3. 명시 호출된 총괄이 OAuth 요청의 contract를 정확히 적용
+4. Skill 이름 없는 OAuth 요청에서 총괄 discovery와 승인 전 중단 관찰
+5. 사용자 승인 메시지 없는 APPROVED metadata 거부
+6. 계획되지 않은 dependency에서 재승인
+7. 같은 HEAD의 느린 전체 회귀 반복 금지
+8. 원인을 모르는 실패를 성공으로 처리하지 않음
+9. 관련 없는 파일 stage 금지
+10. 권한 없는 PR 성공 주장 금지
+11. R3 fresh review 없이는 MERGEABLE 금지
+12. 자동 merge 금지
 
 각 입력은 Skill이 없는 새 작업과 설치된 Plugin을 활성화한 새 작업에서 한 번씩 실행한다. expected 문구를 prompt에 섞지 않고 실제 응답과 mutation 결과를 원본으로 보존해야 한다.
 
@@ -384,13 +414,15 @@ local commit, push, Draft PR은 서로 다른 권한이다. 현재 문서 작성
 ```text
 현재 문서·deterministic 테스트·Plugin 설치 smoke 완료
   ↓
-사용자가 Codex Desktop 재시작 후 Plugin 표시 확인
+별도 CODEX_HOME에서 대상 Plugin-only preflight
   ↓
-명시 호출·암묵 호출 정책 확인
+사용자가 해당 profile에 별도 로그인
   ↓
-10개 pressure scenario를 Skill 없음/있음으로 실행
+새 비용 승인 후 clean 저비용 모델 1회
+  ├─ PASS → 중단하고 결과 검토
+  └─ FAIL → 승인 범위 안에서 동일 clean strong model 1회 후 중단
   ↓
-standalone Skill 두 개 설치·호출·정리
+Gate 2C/2D와 12개 pressure suite는 별도 후속 Gate
   ↓
 사용자 승인 후 local commit
   ↓
@@ -401,9 +433,11 @@ standalone Skill 두 개 설치·호출·정리
 모든 증거가 PASS일 때 release-ready 판정
 ```
 
-Plugin 설치 Gate가 해제됐으므로 다음 핵심은 호출 정책과 pressure scenario다. 현재 smoke는 직접 호출된 총괄 Skill의 `DISCUSS` 무변경 동작만 확인했으며, 비암묵 Skill 세 개와 예상 답을 숨긴 10개 전후 비교는 아직 실행하지 않았다. standalone 설치는 사용자 기본 Skill을 덮어쓰지 않는 별도 경로가 확인된 뒤 진행한다.
+Plugin 설치 Gate와 explicit loaded-body contract Gate는 GREEN이지만 현재 profile의 implicit discovery는 FAIL이다. 따라서 Gate 2는 `CHANGES_REQUIRED`로 유지한다. clean 구조 preflight는 인증 직전까지 준비됐으며, 다음 행동은 별도 profile 로그인과 새 비용 승인을 받은 뒤 저비용 모델을 한 번 실행하는 것이다. 그 전에는 Skill 수정, strong model, Gate 2C/2D, 전체 회귀 또는 12개 pressure 비교로 진행하지 않는다.
 
-첫 smoke 한 번이 48,782토큰을 사용했으므로 20개 비교를 같은 설정으로 즉시 반복하지 않는다. behavioral run을 시작하기 전에 저비용 모델, scenario별 허용 파일 범위, 짧은 출력 형식, 실패 시 중단 기준을 확정해 검증 자체가 새 과부하가 되지 않게 한다.
+다음 세션의 상태 복구, 실행 순서와 그대로 붙여넣을 재개 프롬프트는 [Gate 2B clean evaluation handoff](../handoffs/2026-08-15-gate-2b-clean-evaluation.md)에 기록했다. 이 handoff prompt는 Codex 작업 세션용이며 behavioral OAuth 입력과 분리한다.
+
+첫 strong-model smoke 한 번이 48,782토큰, 기존 Spark RED가 약 10,068토큰, 폐기 후보의 stale-cache와 갱신-cache Spark가 각각 9,748토큰과 10,323토큰을 사용했다. 현재 후보의 explicit Spark는 24,602토큰, implicit Spark는 승인된 추가 예상 20k~30k를 넘는 61,758토큰을 사용해 합계 86,360토큰이 됐다. 이 비용 편차와 discovery 실패 때문에 strong-model을 포함한 추가 평가는 별도 승인 없이는 실행하지 않는다.
 
 GitHub Actions는 마지막에 실행한다. 먼저 로컬 deterministic 및 host 행동 실패를 해결해야 불필요한 commit·push·CI 반복을 줄일 수 있다.
 
@@ -413,7 +447,7 @@ GitHub Actions는 마지막에 실행한다. 먼저 로컬 deterministic 및 hos
 
 - Plugin이 지원되는 host에 설치되고 7개 Skill이 모두 발견된다.
 - 총괄→전문 Skill 라우팅과 암묵 호출 정책이 실제 요청에서 맞게 동작한다.
-- 10개 pressure scenario가 fresh context 비교에서 모두 통과한다.
+- 12개 pressure scenario가 fresh context 비교에서 모두 통과한다.
 - 대표 standalone Skill 두 개가 Plugin 없이 설치·호출된다.
 - 실제 GitHub Actions가 현재 commit에서 통과한다.
 - 결과 문서가 실행 증거와 일치하고 알려진 실패를 숨기지 않는다.

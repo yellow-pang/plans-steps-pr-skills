@@ -74,6 +74,15 @@ class RepositoryContractTest(unittest.TestCase):
     def test_exact_skill_set_and_metadata(self) -> None:
         actual = {path.name for path in SKILLS.iterdir() if path.is_dir()}
         self.assertEqual(actual, set(EXPECTED_SKILLS))
+        self.assertEqual(
+            [name for name, implicit in EXPECTED_SKILLS.items() if implicit],
+            [
+                "running-gated-development",
+                "planning-approved-work",
+                "recording-implementation",
+                "validating-pull-request",
+            ],
+        )
 
         for name, implicit in EXPECTED_SKILLS.items():
             with self.subTest(skill=name):
@@ -109,6 +118,46 @@ class RepositoryContractTest(unittest.TestCase):
             "explicit approval",
             "REAPPROVAL_REQUIRED",
             "Never merge",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_orchestrator_has_compact_route_only_contract(self) -> None:
+        text = read(SKILLS / "running-gated-development" / "SKILL.md")
+        metadata = frontmatter(text)
+        self.assertEqual(
+            metadata["description"],
+            "Use when a user asks to change, implement, plan, verify, commit, publish, "
+            "or review software.",
+        )
+        expected_lines = (
+            "Mode: <DISCUSS | QUICK | FORMAL>",
+            "Risk: <R0 | R1 | R2 | R3>",
+            "Next skill: <none | planning-approved-work | implementing-with-risk-checks | "
+            "recording-implementation | committing-verified-work | publishing-pull-request | "
+            "validating-pull-request>",
+            "Decision: <one sentence describing the allowed next action>",
+        )
+        for line in expected_lines:
+            self.assertIn(line, text)
+
+        self.assertIn(
+            "For a routing-only response, return this four-line decision block:",
+            text,
+        )
+        self.assertNotIn("Return exactly four lines", text)
+        self.assertLess(text.index("## Output contract"), text.index("## Route"))
+        self.assertLessEqual(len(text.split()), 300)
+
+        referenced_skills = set(re.findall(r"\$([a-z0-9-]+)", text))
+        self.assertLessEqual(referenced_skills, set(EXPECTED_SKILLS))
+
+        for phrase in (
+            "| `R0` |",
+            "| `R1` |",
+            "| `R2` |",
+            "| `R3` |",
+            "dependency, public API",
+            "authentication, authorization",
         ):
             self.assertIn(phrase, text)
 
@@ -213,6 +262,8 @@ class RepositoryContractTest(unittest.TestCase):
         for scenario_id in (
             "discuss-does-not-mutate",
             "quick-r2-escalates",
+            "oauth-auth-api-explicit-contract",
+            "oauth-auth-api-implicit-discovery",
             "approval-message-before-metadata",
             "dependency-needs-reapproval",
             "same-head-regression-not-repeated",
