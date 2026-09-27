@@ -1,6 +1,6 @@
 # v3 첫 구현 재검토와 변경 전후 비교
 
-검토일: 2026-09-27. 기준 커밋은 `e8e93283bff51449dc5fb25dd76fa0d1aa0cb25c`이며 제목은 `feat: v3 개발 워크플로 스킬 7개 구현`이다. 사용자 요청에 따라 먼저 첫 구현 28개 파일을 커밋하고, 그 상태를 기준으로 설계 대조와 보완을 수행했다. 이후 보완은 검토를 위해 작업 트리에 남겼으며 추가 커밋·Push·PR은 하지 않았다.
+검토일: 2026-09-27. 비교 기준은 첫 구현 커밋 `e8e9328`, 보완 결과는 `24205fe`다. 사용자 요청에 따라 먼저 첫 구현 28개 파일을 커밋하고, 그 상태를 기준으로 설계 대조와 보완을 수행했다. 보완도 후속 요청에 따라 커밋했다. Push·PR은 수행하지 않았다.
 
 ## 판단과 근거의 범위
 
@@ -81,12 +81,12 @@ B01·B04·B05는 이번 발견과 무관한 평가 확대 없이 유지했다. �
 
 ## 비교와 다음 작업
 
-현재 작업 트리가 보완 후 결과다. 기준을 보존하기 위해 보완 내용을 추가 커밋하지 않았다. 아래 명령은 추적 파일의 차이를 보여준다. 새 reference 2개와 이 보고서는 아직 새 파일이므로 `git status --short`와 해당 파일도 함께 확인한다.
+두 커밋의 차이가 보완 전후 결과다. 아래 명령은 새 reference 2개와 이 보고서를 포함한 변경을 보여준다. 현재 상태는 별도로 `git status --short`로 확인한다.
 
-최종 확인 시 HEAD는 `e8e9328`, index에는 추가 staging이 없었다. Skill은 7개, reference는 기존 5개에서 7개로 늘었다. README·인계 문서는 이번 비교 문서를 현재 재개 지점으로 안내하도록 갱신했다.
+보완 커밋 `24205fe`는 Skill 7개를 유지하고 reference를 5개에서 7개로 늘렸다. README·인계 문서는 이번 비교 문서를 현재 재개 지점으로 안내하도록 갱신했다.
 
 ```powershell
-git diff e8e9328 -- skills tests/behavior docs/steps
+git diff e8e9328 24205fe -- skills tests/behavior docs/steps
 git show e8e9328:skills/steps-documentation/SKILL.md
 git show e8e9328:skills/commit-workflow/SKILL.md
 git status --short
