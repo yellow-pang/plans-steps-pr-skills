@@ -8,7 +8,7 @@
 
 `pr-documentation`은 현재 변경을 리뷰할 수 있도록 배경, 영향, 검증, 리뷰 포인트를 설명하는 스킬이다.
 실제 Pull Request 생성·게시·병합을 수행하는 스킬은 아니다.
-구성 파일은 [`SKILL.md`](../../skills/pr-documentation/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
+구성 파일은 [`SKILL.md`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
 
 | 구간 | 내용 | 기능 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@
 
 ## 2. 선택 조건과 간단 요청 감지
 
-[description](../../skills/pr-documentation/SKILL.md)은 PR 문서나 설명 작성을 “명시적으로 요청”해야 한다고 정한다.
+[description](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md)은 PR 문서나 설명 작성을 “명시적으로 요청”해야 한다고 정한다.
 `preparing-commit`의 “유용한 경우”, `steps-documentation`의 “장기 기록 필요” 같은 선제 선택 조건은 없다.
 “PR 설명 써줘”는 짧아도 목적이 분명하고, 일반적인 “정리해줘”는 이 스킬의 직접 단서가 약하다.
 
@@ -46,7 +46,7 @@ Plan·Steps는 있으면 대조하지만 필수 선행 자료는 아니다.
 파일 위치는 저장소 지침 → 기존 문서 관례 → `docs/pr/` 순으로 결정한다.
 언어는 사용자 요청이 우선이며 없으면 기존 PR 또는 문서 언어를 따른다.
 PR 설명만 요청했으면 응답으로 제공하고, 파일 작성 요청이 있을 때만 저장소에 쓴다.
-근거: [사전 확인](../../skills/pr-documentation/SKILL.md#사전-확인), [문서 위치와 언어](../../skills/pr-documentation/SKILL.md#문서-위치와-언어).
+근거: [사전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#사전-확인), [문서 위치와 언어](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#문서-위치와-언어).
 
 ## 4. 강제성 평가
 
@@ -64,7 +64,7 @@ PR 설명만 요청했으면 응답으로 제공하고, 파일 작성 요청이 
 “영향받지 않는 범위”도 근거가 있을 때만 쓰도록 하여 무영향 주장의 부담을 분명히 한다.
 검증 실행 자체나 새 테스트 작성은 의무화하지 않으며, 실행 기록으로 확인한 결과를 문서화한다.
 Steps와 달리 “작업 규모에 맞게”라는 분량 조정 문구가 없어 작은 변경에도 항목을 전부 펼칠 위험이 있다.
-근거: [문서 내용](../../skills/pr-documentation/SKILL.md#문서-내용), [금지 사항](../../skills/pr-documentation/SKILL.md#금지-사항).
+근거: [문서 내용](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#문서-내용), [금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#금지-사항).
 
 ## 5. 짧은 요청 시나리오 평가
 
@@ -83,14 +83,14 @@ Steps와 달리 “작업 규모에 맞게”라는 분량 조정 문구가 없�
 
 ## 6. 다른 스킬과의 경계
 
-[`steps-documentation`](../../skills/steps-documentation/SKILL.md)은 완료 결과의 장기 기록이고, 이 스킬은 리뷰어를 위한 변경 설명이다.
+[`steps-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md)은 완료 결과의 장기 기록이고, 이 스킬은 리뷰어를 위한 변경 설명이다.
 목적·변경·검증이 겹치지만 PR에는 리뷰 집중점과 배포 고려사항이 추가된다.
 Steps가 있더라도 그대로 신뢰하는 대신 실제 변경과 대조하고, 없어도 작성한다.
 
-[`task-planning`](../../skills/task-planning/SKILL.md)의 계획은 선택적 비교 자료다.
-[`preparing-commit`](../../skills/preparing-commit/SKILL.md)은 현재 커밋 후보를 다루며, PR 설명은 기준 브랜치 대비 전체 변경을 다룬다.
+[`task-planning`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md)의 계획은 선택적 비교 자료다.
+[`preparing-commit`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md)은 현재 커밋 후보를 다루며, PR 설명은 기준 브랜치 대비 전체 변경을 다룬다.
 따라서 커밋 메시지를 PR 설명으로 대체하거나 staged diff만으로 PR 전체를 설명해서는 안 된다.
-[`implementation-workflow`](../../skills/implementation-workflow/SKILL.md#금지-사항)는 후속 스킬을 강제하지 않으므로 구현 완료가 자동 PR 설명 작성으로 이어지지 않는다.
+[`implementation-workflow`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항)는 후속 스킬을 강제하지 않으므로 구현 완료가 자동 PR 설명 작성으로 이어지지 않는다.
 
 명시 PR 문서 요청이라는 선택 조건과 파일 작성 요청이라는 저장 조건은 별개의 안전장치다.
 두 조건을 하나로 취급하면 단순 설명 요청에 불필요한 파일이 생길 수 있다.

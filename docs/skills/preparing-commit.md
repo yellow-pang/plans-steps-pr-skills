@@ -8,7 +8,7 @@
 
 `preparing-commit`은 실제 Git 변경을 조사하여 커밋 메시지 후보와 분리안을 제안하는 스킬이다.
 커밋 실행기는 아니며, 파일 수정과 staging도 하지 않는다.
-구성 파일은 [`SKILL.md`](../../skills/preparing-commit/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
+구성 파일은 [`SKILL.md`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
 
 | 구간 | 내용 | 기능 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@
 
 ## 2. 선택 조건과 간단 요청 감지
 
-[description](../../skills/preparing-commit/SKILL.md)에는 명시 요청과 선제적 판단이 함께 있다.
+[description](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md)에는 명시 요청과 선제적 판단이 함께 있다.
 “커밋 메시지”나 “커밋 준비”는 직접적인 선택 단서다.
 사용자가 요청하지 않아도 구현 완료 후 변경 분리 제안이 유용하다고 판단하면 선택 후보가 된다.
 다만 “유용한 경우”의 기준과 다른 스킬 종료 뒤 선택하는 주체는 정의하지 않는다.
@@ -46,7 +46,7 @@
 
 동일 파일의 staged/unstaged 혼재도 파일명이 아닌 각 diff의 내용으로 판단한다.
 이는 단순 파일 목록 요약보다 실제 커밋 범위를 정확히 설명하게 하는 장치다.
-근거: [상태와 변경 확인](../../skills/preparing-commit/SKILL.md#상태와-변경-확인), [Untracked 파일](../../skills/preparing-commit/SKILL.md#untracked-파일).
+근거: [상태와 변경 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#상태와-변경-확인), [Untracked 파일](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#untracked-파일).
 
 ## 4. 강제성 평가
 
@@ -63,7 +63,7 @@
 “하나의 목적”으로 묶이는 구현과 대응 테스트는 함께 설명할 여지가 있다.
 그러나 “독립적으로 되돌릴 수 있으면”이라는 기준은 기술적으로 분리 가능한 변경까지 과도하게 나눌 위험이 있다.
 사용자가 staging을 조정해야 한다는 안내는 스킬의 실행 금지와 일관되지만, 작업을 끝내려는 사용자에게 추가 단계가 된다.
-근거: [커밋 분리와 prefix](../../skills/preparing-commit/SKILL.md#커밋-분리와-prefix), [변경이 없는 경우와 금지 사항](../../skills/preparing-commit/SKILL.md#변경이-없는-경우와-금지-사항).
+근거: [커밋 분리와 prefix](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#커밋-분리와-prefix), [변경이 없는 경우와 금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#변경이-없는-경우와-금지-사항).
 
 ## 5. 짧은 요청 시나리오 평가
 
@@ -82,12 +82,12 @@
 
 ## 6. 다른 스킬과의 경계
 
-[`implementation-workflow`](../../skills/implementation-workflow/SKILL.md#금지-사항)는 커밋 후보를 이 스킬의 독립 책임으로 둔다.
+[`implementation-workflow`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항)는 커밋 후보를 이 스킬의 독립 책임으로 둔다.
 동시에 명시 요청이 없는 후속 스킬 실행을 강제하지 않으므로, 구현 완료가 반드시 이 스킬 호출로 이어지는 흐름은 아니다.
-[`steps-documentation`](../../skills/steps-documentation/SKILL.md#금지-사항)과 [`pr-documentation`](../../skills/pr-documentation/SKILL.md#금지-사항)은 커밋 메시지를 생성하지 않는다.
+[`steps-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#금지-사항)과 [`pr-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#금지-사항)은 커밋 메시지를 생성하지 않는다.
 기능 책임은 분리되어 있으나 “구현 완료 → 유용하니 후보 생성”과 “후속 스킬 강제 없음”의 적용 기준은 보완할 필요가 있다.
 
-또한 “분석만 수행했으면 메시지를 생성하지 않는다”는 [핵심 원칙](../../skills/preparing-commit/SKILL.md#핵심-원칙)은 해석 여지가 있다.
+또한 “분석만 수행했으면 메시지를 생성하지 않는다”는 [핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#핵심-원칙)은 해석 여지가 있다.
 현재 턴이 읽기 전용이어도 기존 staged 변경의 메시지를 요청할 수 있으므로, 기준이 “직접 구현 여부”인지 “커밋 가능한 변경 존재 여부”인지 명료화해야 한다.
 
 ## 7. 유지 가치와 v3 개선 후보

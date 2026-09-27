@@ -1,6 +1,6 @@
 # v3 업그레이드 구체 설계
 
-갱신 기준: 2026-09-27, 후속 구체 설계 요청 반영. **사용자 요구를 구현 가능한 추천 설계로 구체화했다.** PREPARE/EXECUTE 지원은 사용자 확정 사항이고, 아래 7개 Skill 구성·이름·파일 배치·기본 동작은 이번에 채택한 구현 기준안이다. 실제 `SKILL.md` 구현·설치·행동 평가는 아직 하지 않았다. 이번 작업은 문서 갱신까지이며 새 branch/worktree, commit·push·PR을 수행하지 않는다.
+설계 기준: 2026-09-27. **사용자 요구를 구현 가능한 추천 설계로 구체화한 당시 기록이다.** 이후 같은 브랜치에 v3 `SKILL.md` 7개와 행동 평가 명세를 작성했다. 아래의 “아직 구현하지 않았다”는 표현은 설계 시점의 상태를 뜻한다. 현재 구현·검증 상태는 [Steps](steps/2026-09-27-v3-skill-implementation.md)를 본다.
 
 ## 1. 근거와 상태의 구분
 
@@ -27,7 +27,7 @@
 | 검증 재사용 | main은 각 단계의 관련 검증과 실제 기록 확인을 요구하며 commit 뒤/PR 전 전체 재실행을 강제하지 않음. v2는 same HEAD·관련 환경·동등한 입력의 근거 재사용과 무효화 조건을 이미 명시 | v2가 무조건 반복을 요구했다고 쓰면 부정확. commit 전후 관련 코드가 동일한 경우와 변경된 환경·위험의 판단을 정교화할 후보 |
 | Git 책임 | main은 메시지 준비·PR 설명 중심, v2에는 실행 전문 Skill이 있음 | 최초 workflow 설명만으로는 실행 책임이 미정이었으나, 이번 후속 요청에서 PREPARE/EXECUTE 두 경로 지원이 확정됨 |
 
-main 근거: [구현](../skills/implementation-workflow/SKILL.md#구현), [Plan](../skills/task-planning/SKILL.md), [Steps](../skills/steps-documentation/SKILL.md), [커밋 준비](../skills/preparing-commit/SKILL.md), [PR 설명](../skills/pr-documentation/SKILL.md). v2 근거: [구현 원문][v2-implementation], [검증 정책][v2-verification], [PR 검토 원문][v2-review]. main 상대 링크는 작업 트리를 가리키므로 향후 변경 시 위 기준 SHA의 원문과 구분한다.
+main 근거: [구현](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#구현), [Plan](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md), [Steps](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md), [커밋 준비](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md), [PR 설명](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md). v2 근거: [구현 원문][v2-implementation], [검증 정책][v2-verification], [PR 검토 원문][v2-review]. main 상대 링크는 작업 트리를 가리키므로 향후 변경 시 위 기준 SHA의 원문과 구분한다.
 
 ## 2. 사용자 확정 요구와 채택한 설계 방향
 

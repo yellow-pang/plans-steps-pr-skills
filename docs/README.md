@@ -2,7 +2,7 @@
 
 컨텍스트 압축 후 재개할 때는 [v3 중간 인계 문서](handoffs/2026-09-27-v3-analysis-handoff.md)를 먼저 읽는다. 최초 분석 절의 검증 수치는 당시 기록이며, 이후 커밋 상태와 다음 작업은 인계 문서와 실제 Git 상태에서 확인한다. 이번 요구 반영의 검증은 문서 끝에 별도로 기록한다.
 
-2026-09-27에 사용자 개발 workflow와 개선 요구를 확인한 뒤 후속 요청에 따라 [04 구체 설계](04-v3-upgrade-considerations.md)를 완성했다. 기존 5개를 개편하고 분석·통합 검토를 추가하는 독립 Skill 7개, Context 관리, PREPARE/EXECUTE, 첫 구현 파일과 7개 초기 행동 사례를 정했다. Superpowers 비사용, 주 실행 환경 GPT-5.6 Sol Medium이 전제다. 실제 Skill 구현·설치·행동 평가는 시작하지 않았다.
+2026-09-27에 사용자 개발 workflow와 개선 요구를 확인한 뒤 [04 구체 설계](04-v3-upgrade-considerations.md)를 완성했다. 이후 같은 브랜치에서 v3 Skill 7개와 [초기 행동 평가 명세](../tests/behavior/cases.md)를 작성했다. 이 문서의 아래 비교·평가는 **과거 main 5개**를 대상으로 한다. 현재 v3 구현은 [루트 README](../README.md)를 본다. 주 평가 대상은 GPT-5.6 Sol Medium이며 실제 행동 평가는 아직 실행하지 않았다.
 
 기존 스킬은 **계획·구현·커밋 메시지 준비·완료 기록·PR 설명을 각각 맡는 5개의 독립 스킬**이다. 모든 작업을 Plan → 구현 → Steps → Commit → PR로 강제하는 구조는 아니다. 범위가 명확한 수정은 계획 없이 진행할 수 있고, 관련 문서가 없어도 각 작업을 수행할 수 있다.
 
@@ -23,13 +23,13 @@
 
 각 문서는 선택 조건, 입력·산출물, 절차, 필수·조건부·재량 규칙, 짧은 요청 사례, 스킬 간 경계와 개선 후보를 다룬다.
 
-| 스킬 | 상세 분석 | 원문 |
+| 과거 main 스킬 | 상세 분석 | 고정 SHA 원문 |
 |---|---|---|
-| task-planning | [계획 스킬 분석](skills/task-planning.md) | [SKILL.md](../skills/task-planning/SKILL.md) |
-| implementation-workflow | [구현 스킬 분석](skills/implementation-workflow.md) | [SKILL.md](../skills/implementation-workflow/SKILL.md) |
-| preparing-commit | [커밋 준비 스킬 분석](skills/preparing-commit.md) | [SKILL.md](../skills/preparing-commit/SKILL.md) |
-| steps-documentation | [완료 기록 스킬 분석](skills/steps-documentation.md) | [SKILL.md](../skills/steps-documentation/SKILL.md) |
-| pr-documentation | [PR 설명 스킬 분석](skills/pr-documentation.md) | [SKILL.md](../skills/pr-documentation/SKILL.md) |
+| task-planning | [계획 스킬 분석](skills/task-planning.md) | [SKILL.md](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md) |
+| implementation-workflow | [구현 스킬 분석](skills/implementation-workflow.md) | [SKILL.md](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md) |
+| preparing-commit | [커밋 준비 스킬 분석](skills/preparing-commit.md) | [SKILL.md](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md) |
+| steps-documentation | [완료 기록 스킬 분석](skills/steps-documentation.md) | [SKILL.md](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md) |
+| pr-documentation | [PR 설명 스킬 분석](skills/pr-documentation.md) | [SKILL.md](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md) |
 
 ## 평가 요약
 

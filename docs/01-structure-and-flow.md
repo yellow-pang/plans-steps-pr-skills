@@ -57,7 +57,7 @@ flowchart TD
     R --> RO[응답 또는 요청된 PR 문서 파일]
 ```
 
-점선은 가능한 연결이며 자동 실행 순서가 아니다. 실제 중앙 라우터가 있는 것도 아니다. Steps·Commit·PR은 서로 선행 조건이 아니고, Plan이 없어도 구현·기록·PR 설명을 진행할 수 있다. 구현 스킬은 요청하지 않은 후속 스킬을 강제하지 않는다고 명시한다. 근거: [구현 핵심 원칙](../skills/implementation-workflow/SKILL.md#핵심-원칙), [구현 금지 사항](../skills/implementation-workflow/SKILL.md#금지-사항), [Steps 핵심 원칙](../skills/steps-documentation/SKILL.md#핵심-원칙), [PR 핵심 원칙](../skills/pr-documentation/SKILL.md#핵심-원칙).
+점선은 가능한 연결이며 자동 실행 순서가 아니다. 실제 중앙 라우터가 있는 것도 아니다. Steps·Commit·PR은 서로 선행 조건이 아니고, Plan이 없어도 구현·기록·PR 설명을 진행할 수 있다. 구현 스킬은 요청하지 않은 후속 스킬을 강제하지 않는다고 명시한다. 근거: [구현 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#핵심-원칙), [구현 금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항), [Steps 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#핵심-원칙), [PR 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#핵심-원칙).
 
 일반적인 코드 설명·조사만 요청한 경우에는 이 다섯 스킬을 반드시 거칠 이유가 없다. 다만 이를 명시적으로 분류하는 공통 read-only 경로는 원문에 없다.
 
@@ -86,7 +86,7 @@ flowchart TD
 | Plan 언어 | 별도의 언어 선택 규칙 없음 | 다른 문서 스킬과 명시 수준이 다름 |
 | Git 후속 작업 | 각 스킬 역할에서 staging·commit·push·PR 생성 제외 | 메시지 작성과 실행 완료 사이 담당 기능이 비어 있음 |
 
-위 경로·파일 생성·언어 규칙의 근거: [Plan 문서 위치](../skills/task-planning/SKILL.md#문서-위치), [Steps 문서 위치와 언어](../skills/steps-documentation/SKILL.md#문서-위치와-언어), [PR 문서 위치와 언어](../skills/pr-documentation/SKILL.md#문서-위치와-언어), [커밋 메시지 형식](../skills/preparing-commit/SKILL.md#메시지-형식).
+위 경로·파일 생성·언어 규칙의 근거: [Plan 문서 위치](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#문서-위치), [Steps 문서 위치와 언어](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#문서-위치와-언어), [PR 문서 위치와 언어](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#문서-위치와-언어), [커밋 메시지 형식](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#메시지-형식).
 
 ## 6. 유지보수상 장점과 구조적 한계
 

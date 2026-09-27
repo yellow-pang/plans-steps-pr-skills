@@ -1,6 +1,6 @@
 # v3 스킬 업그레이드 중간 인계
 
-갱신 기준: 2026-09-27, 후속 구체 설계 요청 반영. **v3의 구현 가능한 추천 설계를 완성했다. 실제 Skill 구현·설치·행동 평가는 아직 시작하지 않았다.** 현재 사용자 요청은 설계 문서와 handoff 갱신까지다. 이후 사용자 지시와 실제 Git 상태가 이 스냅샷보다 우선한다.
+기록 기준: 2026-09-27의 설계 완료 시점. **이 문서는 당시 인계 스냅샷이다.** 이후 같은 브랜치에 v3 Skill 7개와 행동 평가 명세를 작성했다. 현재 상태는 실제 Git 상태와 [v3 구현 Steps](../steps/2026-09-27-v3-skill-implementation.md)가 우선한다.
 
 ## 1. 현재 요청과 완료 지점
 
@@ -119,7 +119,7 @@ v2의 과거 explicit GREEN / implicit RED / clean profile BLOCKED_AUTH(행동 �
 4. `tests/behavior/cases.md`로 초기 행동 사례를 재현 가능한 입력·기대 행동·실패 판정까지 구체화하고 정적 검사를 한다.
 5. 격리된 대상 환경에서 관련 행동 사례를 실행해 실제 결과만 보고한다. Plugin 설치·provider 실서비스 실행·commit/push/PR은 그 시점 사용자 요청과 환경 권한에 따라 별도로 판단한다.
 
-먼저 읽을 원문은 [Plan](../../skills/task-planning/SKILL.md), [구현](../../skills/implementation-workflow/SKILL.md), [Steps](../../skills/steps-documentation/SKILL.md), [커밋 준비](../../skills/preparing-commit/SKILL.md), [PR 설명](../../skills/pr-documentation/SKILL.md)이다. 적용 가능한 저장소 지침을 다시 확인한다. 이번에는 상위·루트·하위에서 AGENTS.md가 발견되지 않았다.
+먼저 읽을 원문은 [Plan](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md), [구현](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md), [Steps](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md), [커밋 준비](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md), [PR 설명](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md)이다. 적용 가능한 저장소 지침을 다시 확인한다. 이번에는 상위·루트·하위에서 AGENTS.md가 발견되지 않았다.
 
 ## 7. 검증 계획과 실제 검증 이력
 

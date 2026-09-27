@@ -1,10 +1,10 @@
 # implementation-workflow 분석
 
-분석 기준은 `main`과 동일한 `d7c0887`의 [원문](../../skills/implementation-workflow/SKILL.md)이다. 이 문서는 원문을 읽은 정적 분석이며, 실제 모델의 스킬 선택률·수정 성공률을 측정한 결과가 아니다. 강제성은 프롬프트 지침의 강도를 뜻하고, 이 스킬 파일 자체에 명령 실행을 차단하는 자동 gate는 없다.
+분석 기준은 `main`과 동일한 `d7c0887`의 [원문](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md)이다. 이 문서는 원문을 읽은 정적 분석이며, 실제 모델의 스킬 선택률·수정 성공률을 측정한 결과가 아니다. 강제성은 프롬프트 지침의 강도를 뜻하고, 이 스킬 파일 자체에 명령 실행을 차단하는 자동 gate는 없다.
 
 ## 역할과 선택 조건
 
-`implementation-workflow`는 기능 구현, 버그 수정, 테스트 추가, 리팩터링, 문서와 구현의 불일치 수정을 수행하는 스킬이다. description은 ① 승인된 계획을 구현하는 요청과 ② 계획 없이도 범위가 명확한 변경 요청을 모두 받는다. 즉 계획 파일이나 승인 절차를 모든 구현의 선행 조건으로 만들지 않는다. [근거: frontmatter 및 핵심 원칙](../../skills/implementation-workflow/SKILL.md#핵심-원칙), 원문 1~10행.
+`implementation-workflow`는 기능 구현, 버그 수정, 테스트 추가, 리팩터링, 문서와 구현의 불일치 수정을 수행하는 스킬이다. description은 ① 승인된 계획을 구현하는 요청과 ② 계획 없이도 범위가 명확한 변경 요청을 모두 받는다. 즉 계획 파일이나 승인 절차를 모든 구현의 선행 조건으로 만들지 않는다. [근거: frontmatter 및 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#핵심-원칙), 원문 1~10행.
 
 “고쳐 줘”, “추가해 줘”, “이 계획대로 구현해 줘”처럼 짧은 개발 요청에 대응할 범위가 넓다. 다만 “범위가 명확함”의 기준과 단순 수정·복잡한 변경을 구분하는 기준은 정의되지 않았다. 순수한 설명 요청이나 일반 문서 작성 요청은 description의 명시적 대상이 아니다.
 
@@ -20,7 +20,7 @@
 | 문서·후속 스킬 | 명시적으로 요청하지 않은 문서 생성이나 후속 스킬 실행을 강제하지 않음 |
 | 기본 책임 밖 | `git add`, commit, push, PR 생성, 커밋 메시지 후보 작성 |
 
-근거: [핵심 원칙](../../skills/implementation-workflow/SKILL.md#핵심-원칙), [사전 확인](../../skills/implementation-workflow/SKILL.md#사전-확인), [검증과 완료 확인](../../skills/implementation-workflow/SKILL.md#검증과-완료-확인), [금지 사항](../../skills/implementation-workflow/SKILL.md#금지-사항). Git 작업 금지는 이 스킬의 기본 책임 경계이며, 실제 세션의 상위 지침과 사용자 권한까지 처리하는 실행 장치라는 뜻은 아니다.
+근거: [핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#핵심-원칙), [사전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#사전-확인), [검증과 완료 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#검증과-완료-확인), [금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항). Git 작업 금지는 이 스킬의 기본 책임 경계이며, 실제 세션의 상위 지침과 사용자 권한까지 처리하는 실행 장치라는 뜻은 아니다.
 
 ## 처리 흐름
 
@@ -34,11 +34,11 @@
 8. 각 단계에서 관련 검증과 diff를 확인하고 실패 원인을 구분한다. 완료 전에 `git status`와 `git diff`로 변경 전체를 점검한다.
 9. 실제 실행한 검증만 근거로 최종 보고한다. 커밋 준비나 PR 작업으로 자동 넘어가지 않는다.
 
-근거: [사전 확인](../../skills/implementation-workflow/SKILL.md#사전-확인)부터 [금지 사항](../../skills/implementation-workflow/SKILL.md#금지-사항)까지.
+근거: [사전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#사전-확인)부터 [금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항)까지.
 
-버그 수정에는 별도 순서가 있다. **증상·재현 조건 확인 → 원인 추적 → 가능한 회귀 테스트 → 최소 수정 → 회귀 검증**으로 진행하며, 오류를 숨기는 우회책을 해결로 보지 않는다. “가능한 회귀 테스트”라는 표현이므로 모든 수정에서 새 테스트 파일을 반드시 만들어야 한다는 규칙은 아니다. [근거: 구현](../../skills/implementation-workflow/SKILL.md#구현), 원문 30행.
+버그 수정에는 별도 순서가 있다. **증상·재현 조건 확인 → 원인 추적 → 가능한 회귀 테스트 → 최소 수정 → 회귀 검증**으로 진행하며, 오류를 숨기는 우회책을 해결로 보지 않는다. “가능한 회귀 테스트”라는 표현이므로 모든 수정에서 새 테스트 파일을 반드시 만들어야 한다는 규칙은 아니다. [근거: 구현](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#구현), 원문 30행.
 
-완료 검토는 범위 밖 변경, 임시 파일, 비밀값, 불필요한 포맷 변경, 누락된 문서를 확인한다. 실패 보고는 이번 변경으로 생긴 실패, 기존 실패, 환경·외부 의존성 때문에 실행하지 못한 검증으로 구분한다. [근거: 검증과 완료 확인](../../skills/implementation-workflow/SKILL.md#검증과-완료-확인), 원문 34~41행.
+완료 검토는 범위 밖 변경, 임시 파일, 비밀값, 불필요한 포맷 변경, 누락된 문서를 확인한다. 실패 보고는 이번 변경으로 생긴 실패, 기존 실패, 환경·외부 의존성 때문에 실행하지 못한 검증으로 구분한다. [근거: 검증과 완료 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#검증과-완료-확인), 원문 34~41행.
 
 ## 강제성 평가
 
@@ -71,11 +71,11 @@
 
 ## 다른 스킬과의 경계 및 충돌 가능성
 
-- **계획과의 경계:** [task-planning의 선택 조건과 승인 대기](../../skills/task-planning/SKILL.md#승인-대기)는 결정이 필요한 요청을 계획으로 보낸다. 이 스킬은 명확한 요청을 직접 구현한다. 공통된 명확성·위험 기준이 없어 초기 선택이 흔들릴 수 있다.
-- **Steps와의 경계:** 최종 응답에는 변경·검증·위험을 포함하지만 별도 Steps 파일 작성은 강제하지 않는다. [steps-documentation](../../skills/steps-documentation/SKILL.md#문서-위치와-언어)은 파일 작성 요청이 있을 때 기록 문서를 만든다.
+- **계획과의 경계:** [task-planning의 선택 조건과 승인 대기](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#승인-대기)는 결정이 필요한 요청을 계획으로 보낸다. 이 스킬은 명확한 요청을 직접 구현한다. 공통된 명확성·위험 기준이 없어 초기 선택이 흔들릴 수 있다.
+- **Steps와의 경계:** 최종 응답에는 변경·검증·위험을 포함하지만 별도 Steps 파일 작성은 강제하지 않는다. [steps-documentation](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#문서-위치와-언어)은 파일 작성 요청이 있을 때 기록 문서를 만든다.
 - **문서 수정의 경계:** 계약 변경 시 문서를 확인하고 완료 시 누락된 문서를 점검하는 규칙과, 요청하지 않은 문서 생성을 강제하지 않는 규칙이 함께 있다. 기존 기술 문서의 필수 동기화와 새 작업 기록 파일의 생성을 구분하면 해석이 쉬워진다.
-- **커밋과의 경계:** 커밋 메시지 후보는 [preparing-commit](../../skills/preparing-commit/SKILL.md#핵심-원칙)의 책임이다. 구현 완료를 이유로 그 스킬 실행을 강제하지 않는다. 실제 커밋 실행 절차도 이 파일에 없다.
-- **PR과의 경계:** 변경 보고가 PR 설명을 자동 생성하지 않는다. [pr-documentation](../../skills/pr-documentation/SKILL.md#핵심-원칙)은 별도 설명 작성 역할이며 실제 PR 생성도 하지 않는다.
+- **커밋과의 경계:** 커밋 메시지 후보는 [preparing-commit](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#핵심-원칙)의 책임이다. 구현 완료를 이유로 그 스킬 실행을 강제하지 않는다. 실제 커밋 실행 절차도 이 파일에 없다.
+- **PR과의 경계:** 변경 보고가 PR 설명을 자동 생성하지 않는다. [pr-documentation](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#핵심-원칙)은 별도 설명 작성 역할이며 실제 PR 생성도 하지 않는다.
 
 ## 유지할 가치와 v3 개선 후보
 

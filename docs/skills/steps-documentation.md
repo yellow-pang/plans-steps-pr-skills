@@ -8,7 +8,7 @@
 
 `steps-documentation`은 완료된 개발 작업을 확인 가능한 결과와 검증 근거 중심으로 기록하는 스킬이다.
 이름은 Steps이지만 수행 순서를 복원하는 작업 일지보다 구현 결과 보고서에 가깝다.
-구성 파일은 [`SKILL.md`](../../skills/steps-documentation/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
+구성 파일은 [`SKILL.md`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
 
 | 구간 | 내용 | 기능 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@
 
 ## 2. 선택 조건과 간단 요청 감지
 
-[description](../../skills/steps-documentation/SKILL.md)은 “Steps 문서를 요청”한 경우를 직접 지정한다.
+[description](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md)은 “Steps 문서를 요청”한 경우를 직접 지정한다.
 또한 실제 변경과 검증 결과를 장기 기록으로 남길 필요가 있다고 판단한 경우도 포함한다.
 따라서 명시적 Steps 요청은 인식하기 쉽지만, “작업 정리”나 “기록 남겨줘”는 장기 기록 필요성에 대한 해석이 개입한다.
 일반적인 코드 설명이나 미래 계획은 완료된 사실을 다루는 본문과 맞지 않는다.
@@ -29,7 +29,7 @@
 스킬 선택과 저장소 파일 쓰기는 서로 다른 조건이다.
 선택되더라도 사용자에게 파일 작성 요청이 없으면 저장소에 문서를 생성·수정하지 않는다.
 “Steps 문서 작성”을 파일 요청으로 볼지 응답 내용 요청으로 볼지에 대한 구체 예시는 없다.
-근거: [문서 위치와 언어](../../skills/steps-documentation/SKILL.md#문서-위치와-언어).
+근거: [문서 위치와 언어](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#문서-위치와-언어).
 
 ## 3. 입력·산출물·절차
 
@@ -64,7 +64,7 @@ Plan이 없다는 이유로 작성이 중단되지 않으며, 파일명·번호�
 검증 명령의 재실행을 의무화하지는 않는다. 기존 실행 근거를 확인하고, 미실행 검증과 이유를 기록하는 구조다.
 “선택 이유”는 문서 항목이지만 확인할 수 없는 이유를 지어낼 수 없으므로, 근거가 없으면 그 한계를 밝혀야 한다.
 기계적 필수 필드나 문서 완성도 검사기는 없어 항목 생략·과잉 작성의 일관성은 모델에 의존한다.
-근거: [작성 전 확인](../../skills/steps-documentation/SKILL.md#작성-전-확인), [문서 내용](../../skills/steps-documentation/SKILL.md#문서-내용), [금지 사항](../../skills/steps-documentation/SKILL.md#금지-사항).
+근거: [작성 전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#작성-전-확인), [문서 내용](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#문서-내용), [금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#금지-사항).
 
 ## 5. 짧은 요청 시나리오 평가
 
@@ -83,15 +83,15 @@ Plan이 없다는 이유로 작성이 중단되지 않으며, 파일명·번호�
 
 ## 6. 다른 스킬과의 경계
 
-[`task-planning`](../../skills/task-planning/SKILL.md)은 구현 전 의사결정과 계획을 다루고, 이 스킬은 실제 완료 결과를 다룬다.
+[`task-planning`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md)은 구현 전 의사결정과 계획을 다루고, 이 스킬은 실제 완료 결과를 다룬다.
 Plan은 필수 선행 문서가 아니며, 존재할 때 차이를 설명하는 비교 대상이다.
-[`implementation-workflow`](../../skills/implementation-workflow/SKILL.md#검증과-완료-확인)의 완료 보고와 내용이 일부 겹친다.
+[`implementation-workflow`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#검증과-완료-확인)의 완료 보고와 내용이 일부 겹친다.
 구현 스킬의 최종 응답과 장기 기록용 Steps의 차이를 사용자가 요청한 산출물로 구분할 필요가 있다.
 구현 스킬은 요청하지 않은 문서 생성·후속 실행을 강제하지 않으므로 Steps가 모든 구현의 필수 단계는 아니다.
 
-[`pr-documentation`](../../skills/pr-documentation/SKILL.md)은 리뷰어가 변경을 판단할 설명을 만든다.
+[`pr-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md)은 리뷰어가 변경을 판단할 설명을 만든다.
 실제 변경·검증 근거는 공유하지만 Steps를 PR 설명으로 그대로 반복하도록 요구하지 않는다.
-커밋 메시지는 [`preparing-commit`](../../skills/preparing-commit/SKILL.md)의 책임이며 Steps 작성의 자동 후속 작업이 아니다.
+커밋 메시지는 [`preparing-commit`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md)의 책임이며 Steps 작성의 자동 후속 작업이 아니다.
 
 ## 7. 유지 가치와 v3 개선 후보
 

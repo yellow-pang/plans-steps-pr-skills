@@ -27,7 +27,7 @@ git show eb70e3f72dcbe23bc76245e3b8ad12f841279154:README.md
 
 ## 2. main에서 v2로 바뀐 구조
 
-main은 `skills/<name>/SKILL.md` 5개가 각각 작업을 맡는 구조다. [implementation-workflow](../skills/implementation-workflow/SKILL.md)는 승인 계획이 없더라도 명확한 사용자 요청을 작업 기준으로 허용하고, 관련 문서 부재를 중단 사유로 삼지 않는다. [task-planning](../skills/task-planning/SKILL.md)은 계획 파일을 요청받은 경우에만 저장소에 문서를 만든다.
+main은 `skills/<name>/SKILL.md` 5개가 각각 작업을 맡는 구조다. [implementation-workflow](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md)는 승인 계획이 없더라도 명확한 사용자 요청을 작업 기준으로 허용하고, 관련 문서 부재를 중단 사유로 삼지 않는다. [task-planning](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md)은 계획 파일을 요청받은 경우에만 저장소에 문서를 만든다.
 
 v2는 총괄 1개와 전문 Skill 6개를 Plugin으로 묶었다. 원본은 `plugins/plans-steps-pr-skills/skills/`로 이동하고, 기존 5개 디렉터리는 v2에서 제거됐다. marketplace, Plugin manifest, 각 Skill의 `agents/openai.yaml`, 템플릿, 검증 정책, digest script, 테스트, CI가 추가됐다. [구조 근거: v2 README][v2-readme], [manifest][manifest], [marketplace][marketplace].
 

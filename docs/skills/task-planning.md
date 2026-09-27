@@ -1,10 +1,10 @@
 # task-planning 분석
 
-분석 기준은 `main`과 동일한 `d7c0887`의 [원문](../../skills/task-planning/SKILL.md)이다. 이 문서는 원문을 읽은 정적 분석이며, 실제 모델의 스킬 선택률·승인 준수율을 측정한 결과가 아니다. 아래의 강제성은 프롬프트 지침의 강도를 뜻한다. 이 스킬 파일 자체에는 명령 실행을 막는 자동 gate가 없다.
+분석 기준은 `main`과 동일한 `d7c0887`의 [원문](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md)이다. 이 문서는 원문을 읽은 정적 분석이며, 실제 모델의 스킬 선택률·승인 준수율을 측정한 결과가 아니다. 아래의 강제성은 프롬프트 지침의 강도를 뜻한다. 이 스킬 파일 자체에는 명령 실행을 막는 자동 gate가 없다.
 
 ## 역할과 선택 조건
 
-`task-planning`은 구현 전에 조사·범위·대안·검증 방법을 정리하는 계획 전용 스킬이다. description은 ① 사용자가 구현 계획을 요청한 경우와 ② 구현 전에 범위·대안·승인 사항을 결정해야 하는 경우를 포함한다. 명시적인 “계획을 작성해 줘”뿐 아니라 모호하거나 선택이 필요한 개발 요청도 선택 대상이 된다. [근거: frontmatter 및 핵심 원칙](../../skills/task-planning/SKILL.md#핵심-원칙), 원문 1~10행.
+`task-planning`은 구현 전에 조사·범위·대안·검증 방법을 정리하는 계획 전용 스킬이다. description은 ① 사용자가 구현 계획을 요청한 경우와 ② 구현 전에 범위·대안·승인 사항을 결정해야 하는 경우를 포함한다. 명시적인 “계획을 작성해 줘”뿐 아니라 모호하거나 선택이 필요한 개발 요청도 선택 대상이 된다. [근거: frontmatter 및 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#핵심-원칙), 원문 1~10행.
 
 두 번째 조건의 “결정해야 하는 경우”에는 규모나 위험 기준이 없다. 따라서 어떤 불확실성을 모델이 자체 조사로 해결하고 어떤 것을 계획·승인으로 넘길지는 판단에 맡겨져 있다. 단순 수정에서 반드시 거쳐야 하는 진입 스킬이라는 규칙은 없다.
 
@@ -19,7 +19,7 @@
 | 파일 위치 | 저장소 지침 → 기존 문서 구조·명명 규칙 → `docs/plans/`. 다른 산출물과 번호·파일명 강제 동기화 없음 |
 | 기본 책임 밖 | 구현, staging, commit, push, PR 생성, 커밋 메시지 후보 작성 |
 
-근거: [사전 확인](../../skills/task-planning/SKILL.md#사전-확인), [문서 위치](../../skills/task-planning/SKILL.md#문서-위치), [승인 대기](../../skills/task-planning/SKILL.md#승인-대기). 기본 책임 밖이라는 선언은 이 스킬의 동작 경계이며, 상위 지침과 사용자 권한을 처리하는 별도 실행 장치가 있다는 의미는 아니다.
+근거: [사전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#사전-확인), [문서 위치](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#문서-위치), [승인 대기](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#승인-대기). 기본 책임 밖이라는 선언은 이 스킬의 동작 경계이며, 상위 지침과 사용자 권한을 처리하는 별도 실행 장치가 있다는 의미는 아니다.
 
 ## 처리 흐름
 
@@ -31,9 +31,9 @@
 6. 요청에 따라 응답 또는 계획 파일을 작성한다. 파일을 요청한 경우에만 문서 위치 규칙을 적용한다.
 7. 사용자에게 계획을 제시한 뒤 승인·대안 선택·수정·취소를 명시할 때까지 대기한다. 다음 구현 단계로 자동 진행하지 않는다.
 
-근거: [핵심 원칙](../../skills/task-planning/SKILL.md#핵심-원칙)부터 [승인 대기](../../skills/task-planning/SKILL.md#승인-대기)까지.
+근거: [핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#핵심-원칙)부터 [승인 대기](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#승인-대기)까지.
 
-계획에는 문제·현재 상태, 조사 근거, 범위, 대안·결정, 예상 변경 파일·주요 인터페이스, 구현 단계·선후관계, 계약 또는 실행 흐름, 위험, 완료 조건, 검증 방법, 결정 필요 사항·후속 작업이 들어간다. 각 단계는 독립적으로 검증할 수 있어야 한다. 배포나 데이터 변경이 있을 때에는 마이그레이션·롤백·관측 방법도 추가한다. [근거: 계획 내용](../../skills/task-planning/SKILL.md#계획-내용), 원문 45행.
+계획에는 문제·현재 상태, 조사 근거, 범위, 대안·결정, 예상 변경 파일·주요 인터페이스, 구현 단계·선후관계, 계약 또는 실행 흐름, 위험, 완료 조건, 검증 방법, 결정 필요 사항·후속 작업이 들어간다. 각 단계는 독립적으로 검증할 수 있어야 한다. 배포나 데이터 변경이 있을 때에는 마이그레이션·롤백·관측 방법도 추가한다. [근거: 계획 내용](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#계획-내용), 원문 45행.
 
 ## 강제성 평가
 
@@ -47,7 +47,7 @@
 | 조건부 허용 | 사용자가 계획 파일 작성을 요청한 경우에만 파일 수정 | “계획을 알려 줘”를 저장소 변경으로 확대하지 않음 |
 | 모델 판단 | 승인 필요 범위, 조사 깊이, 대안의 적용 가능성, 위험 판단 | 명시적 위험 등급이나 의사결정 기준이 없어 일관성은 모델에 의존 |
 
-원문에는 “권장” 수준으로만 선언한 별도 규칙이 거의 없다. 조사·구성·금지 사항을 직접 지시하는 반면, 그 적용 규모는 모델 판단으로 남겨 둔다. [근거: 사전 확인](../../skills/task-planning/SKILL.md#사전-확인), [범위와 대안](../../skills/task-planning/SKILL.md#범위와-대안), [계획 내용](../../skills/task-planning/SKILL.md#계획-내용).
+원문에는 “권장” 수준으로만 선언한 별도 규칙이 거의 없다. 조사·구성·금지 사항을 직접 지시하는 반면, 그 적용 규모는 모델 판단으로 남겨 둔다. [근거: 사전 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#사전-확인), [범위와 대안](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#범위와-대안), [계획 내용](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md#계획-내용).
 
 ## 간단한 요청을 어떻게 처리할 것으로 예상되는가
 
@@ -65,7 +65,7 @@
 
 ## 다른 스킬과의 경계 및 충돌 가능성
 
-- **구현과의 경계:** 이 스킬은 계획·승인 대기까지 맡는다. [implementation-workflow의 핵심 원칙](../../skills/implementation-workflow/SKILL.md#핵심-원칙)은 승인된 계획이 없더라도 명확한 사용자 요청을 기준으로 구현하도록 한다. 전체 흐름이 반드시 계획부터 시작하는 직렬 절차는 아니다.
+- **구현과의 경계:** 이 스킬은 계획·승인 대기까지 맡는다. [implementation-workflow의 핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#핵심-원칙)은 승인된 계획이 없더라도 명확한 사용자 요청을 기준으로 구현하도록 한다. 전체 흐름이 반드시 계획부터 시작하는 직렬 절차는 아니다.
 - **선택 경계:** “구현 전에 결정이 필요함”과 “계획 없이도 범위가 명확함”을 가르는 공통 기준이 없다. 같은 요청이 모델 판단에 따라 두 스킬 중 어느 쪽으로도 들어갈 수 있다.
 - **후속 문서와의 경계:** 관련 Steps·Commit·PR 자료는 있을 때만 참고한다. 계획 작성이 후속 문서 생성이나 동일 번호 사용을 요구하지 않는다.
 - **커밋과의 경계:** 메시지 후보는 `preparing-commit` 책임이라고 명시하지만 자동 호출·위임 방법은 없다. 계획과 커밋을 동시에 요청할 때의 조정 규칙도 별도로 정의하지 않는다.

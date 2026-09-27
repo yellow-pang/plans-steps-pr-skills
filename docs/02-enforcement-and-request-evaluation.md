@@ -31,7 +31,7 @@
 | steps-documentation | 높음: 완료 작업 Steps 요청 | 중간: “장기 기록 필요”를 모델이 판단 | 비교적 낮음: 작업 규모에 맞게 작성 가능 | 파일 생성은 제한되지만 기록 필요 판단은 넓음 |
 | pr-documentation | 높음: 명시적 PR 설명 요청 | 비교적 좁음: 명시 조건 있음 | 중간: 전체 diff 확인은 타당, 간단 출력 규칙은 약함 | 설명 작성과 실제 PR 생성 경계가 가장 분명함 |
 
-원문 근거: [계획](../skills/task-planning/SKILL.md), [구현](../skills/implementation-workflow/SKILL.md), [커밋 준비](../skills/preparing-commit/SKILL.md), [Steps](../skills/steps-documentation/SKILL.md), [PR 설명](../skills/pr-documentation/SKILL.md). 자세한 판단은 [각 스킬 분석](README.md#스킬별-분석)에 있다.
+원문 근거: [계획](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/task-planning/SKILL.md), [구현](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md), [커밋 준비](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md), [Steps](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md), [PR 설명](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md). 자세한 판단은 [각 스킬 분석](README.md#스킬별-분석)에 있다.
 
 ## 4. 요청별 예상 동작
 
