@@ -4,7 +4,7 @@ v3 첫 구현은 `e8e9328`, 이후 문서·커밋 처리 기준의 보완은 `24
 
 컨텍스트 압축 후 재개할 때는 [v3 중간 인계 문서](handoffs/2026-09-27-v3-analysis-handoff.md)를 먼저 읽는다. 최초 분석 절의 검증 수치는 당시 기록이며, 이후 커밋 상태와 다음 작업은 인계 문서와 실제 Git 상태에서 확인한다. 이번 요구 반영의 검증은 문서 끝에 별도로 기록한다.
 
-2026-09-27에 사용자 개발 workflow와 개선 요구를 확인한 뒤 [04 구체 설계](04-v3-upgrade-considerations.md)를 완성했다. 이후 같은 브랜치에서 v3 Skill 7개와 [초기 행동 평가 명세](../tests/behavior/cases.md)를 작성했다. 이 문서의 아래 비교·평가는 **과거 main 5개**를 대상으로 한다. 현재 v3 구현은 [루트 README](../README.md)를 본다. 주 평가 대상은 GPT-5.6 Sol Medium이며 실제 행동 평가는 아직 실행하지 않았다.
+2026-09-27에 사용자 개발 workflow와 개선 요구를 확인한 뒤 [04 구체 설계](04-v3-upgrade-considerations.md)를 완성했다. 이후 같은 브랜치에서 v3 Skill 7개와 [초기 행동 평가 명세](../tests/behavior/cases.md)를 작성했다. 이 문서의 아래 비교·평가는 **과거 main 5개**를 대상으로 한다. 현재 v3 구현은 [루트 README](../README.md)를 본다. 설계 당시 평가 대상은 GPT-5.6 Sol Medium이었고, 현재 사용자 지정 대상은 GPT-6 Sol Medium이다. CLI 업데이트 후 [B01·B02·B06 실제 행동 평가](../tests/behavior/runs/2026-09-27-gpt-6-sol-medium.md)를 진행했다.
 
 기존 스킬은 **계획·구현·커밋 메시지 준비·완료 기록·PR 설명을 각각 맡는 5개의 독립 스킬**이다. 모든 작업을 Plan → 구현 → Steps → Commit → PR로 강제하는 구조는 아니다. 범위가 명확한 수정은 계획 없이 진행할 수 있고, 관련 문서가 없어도 각 작업을 수행할 수 있다.
 

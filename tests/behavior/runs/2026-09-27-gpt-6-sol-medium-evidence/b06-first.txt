@@ -1,0 +1,10 @@
+현재 **staged 변경**에 대한 커밋 메시지입니다.
+
+```text
+fix: API v2의 ready 응답을 완료 상태로 처리
+
+- ready 상태를 done으로 변환해 화면에서 완료로 표시하도록 수정
+- 동작 설명과 ready 응답 테스트를 추가
+```
+
+포함 범위는 `README.md`, `parser.py`, `test_parser.py`의 staged 변경입니다. `parser.py`의 별도 unstaged 수정과 새 파일 `notes.txt`는 제외했습니다. 파일과 Git 상태는 변경하지 않았습니다.

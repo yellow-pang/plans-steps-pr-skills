@@ -17,3 +17,5 @@
 배경과 설계는 [기존 Skill 분석](docs/README.md)과 [v3 구체 설계](docs/04-v3-upgrade-considerations.md)에, 초기 행동 평가 명세는 [B01~B07](tests/behavior/cases.md)에 있습니다. 분석 문서의 과거 main 원문 링크는 고정 SHA를 가리킵니다.
 
 첫 구현 `e8e9328`과 이후 설명 품질·메시지 처리 보완의 차이는 [재검토와 전후 비교](docs/steps/2026-09-27-v3-skill-review.md)에서 확인할 수 있습니다. 정적 검사와 실제 모델 행동 평가의 결과는 구분해 기록합니다.
+
+현재 사용자 지정 행동 평가 대상은 GPT-6 Sol Medium입니다. [업데이트 후 실제 행동 평가](tests/behavior/runs/2026-09-27-gpt-6-sol-medium.md)에서 B01·B02·B06을 실행했고, 미검증 범위도 함께 기록했습니다.

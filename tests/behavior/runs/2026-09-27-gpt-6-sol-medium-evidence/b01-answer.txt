@@ -1,0 +1,1 @@
+[index.html](C:/Dev/plans-steps-pr-skills/.v3-eval/b01/index.html:1)의 버튼 문구를 `Submit`에서 `제출`로 바꿨습니다. `git diff --check`도 통과했습니다.
