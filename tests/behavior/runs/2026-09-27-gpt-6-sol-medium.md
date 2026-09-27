@@ -36,6 +36,8 @@ B01에는 v3 `implementation-workflow`를 평가 저장소의 `.agents/skills/`�
 
 Steps는 이전에 저장 전 완료가 찍혔다는 문제, 전후 상태 비교 표, 예외를 유지한 이유, 직접 실행 근거와 미실행 테스트를 설명했다. `worker`를 “백그라운드 작업 처리기”로 풀어 썼다. 단순 용어 나열이나 몇 줄 요약으로 끝나지 않았다.
 
+보존한 [Context 원문](2026-09-27-gpt-6-sol-medium-evidence/b02-context.md)과 [Steps 원문](2026-09-27-gpt-6-sol-medium-evidence/b02-steps.md) 내부의 상대 링크는 평가 당시 임시 저장소의 경로다. 해당 저장소는 삭제했으므로 보존본을 읽을 때는 이 문서의 링크를 사용한다.
+
 첫 실행 당시 CLI 환경의 Python 3.10·3.13·3.14에는 `pytest`가 없어 `test_flow.py`를 실행하지 못했다. 모델은 Python 3.10에서 같은 성공·실패 경로를 직접 실행했고 `git diff --check`를 통과했다고 기록했다. 후속 검증에서 `pytest 9.1.1`을 임시 평가 폴더에만 설치하고, **첫 실행 후 삭제했던 fixture를 당시 관측한 최종 코드·테스트로 재구성**해 같은 테스트 함수 2개를 실행했다. [재실행 결과](2026-09-27-gpt-6-sol-medium-evidence/b02-replay-pytest.txt)는 `2 passed`다. 원래 임시 작업 트리 자체를 다시 실행한 것은 아니므로 이 차이를 남긴다. 이 fixture는 메모리 저장소라 외부 영속 저장·동시성은 확인하지 않았다.
 
 ### B03: 실제 응답과 오래된 fixture
