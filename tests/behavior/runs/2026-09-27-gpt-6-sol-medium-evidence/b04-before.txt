@@ -1,0 +1,9 @@
+`reviewing-development-work` 스킬의 Plan 관점으로 `plan.md`와 관련 소형 코드 5개를 읽었습니다. 주요 발견은 다음과 같습니다.
+
+1. **높음 — 저장 후 화면 표시 흐름이 Plan에서 연결되지 않습니다.** 목표는 변환된 상태를 DB에 저장하고 재조회해 UI에 표시하는 것이지만, [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:3)의 저장 검사는 별도 항목입니다. 현재 [service.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/service.py:4)는 파싱만 하고, [ui.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/ui.py:4)는 입력 payload를 바로 표시합니다. 저장·재조회 결과가 UI까지 이어지는 완료 조건을 명시해야 합니다.
+
+2. **중간 — 같은 parser 실패 검사가 세 층에 중복됩니다.** [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:6)의 service·controller·UI 테스트는 동일한 실패와 오류를 반복 확인하도록 되어 있습니다. parser 실패는 경계 한 곳에서 검증하고, 상위 테스트는 저장 또는 화면 흐름처럼 각 층의 고유 동작을 확인하는 편이 낫습니다. 또한 현재 [parser.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/parser.py:1)는 예외를 발생시키므로, Plan의 “오류가 반환”되는 계약도 구체화해야 합니다.
+
+3. **중간 — `StatusEngine`은 현재 범위에 근거가 없는 복잡도입니다.** [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:11)에는 provider가 한 곳인데 미래 확장 가능성만으로 범용 계층을 추가합니다. 1번의 경계 변환으로 현재 요구를 처리하고, 여러 provider의 실제 계약이 생길 때 추상화를 판단하면 됩니다.
+
+검토는 문서와 현재 코드의 정적 확인에 한정했습니다. 파일 수정과 Git 명령은 실행하지 않았습니다.

@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "url": "local://pull/1",
+    "head": "feat/status",
+    "base": "main",
+    "title": "fix: API v2 ready 상태를 완료로 처리",
+    "body": "## 변경 사항\n- API v2의 `ready` 상태를 완료 상태인 `done`으로 변환합니다.\n- 다른 상태 값은 그대로 반환합니다.\n- `ready` 사례를 단위 테스트에 추가하고 README 설명을 갱신합니다.\n\n## 검증\n- `py -3.10 -m unittest -v test_parser` (2개 테스트 통과)",
+    "state": "open"
+  }
+]
