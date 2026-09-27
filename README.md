@@ -15,3 +15,5 @@
 `preparing-commit`은 `commit-workflow`, `pr-documentation`은 `pr-workflow`로 개편했습니다. 옛 이름의 Skill은 함께 제공하지 않습니다. 메시지·설명만 요청하면 준비 자료만 만들며 Git/PR 상태를 바꾸지 않습니다. Commit·Push·PR 실행은 각각 명시된 요청 범위에서 수행합니다.
 
 배경과 설계는 [기존 Skill 분석](docs/README.md)과 [v3 구체 설계](docs/04-v3-upgrade-considerations.md)에, 초기 행동 평가 명세는 [B01~B07](tests/behavior/cases.md)에 있습니다. 분석 문서의 과거 main 원문 링크는 고정 SHA를 가리킵니다.
+
+첫 구현 `e8e9328`과 이후 설명 품질·메시지 처리 보완의 차이는 [재검토와 전후 비교](docs/steps/2026-09-27-v3-skill-review.md)에서 확인할 수 있습니다. 정적 검사와 실제 모델 행동 평가의 결과는 구분해 기록합니다.
