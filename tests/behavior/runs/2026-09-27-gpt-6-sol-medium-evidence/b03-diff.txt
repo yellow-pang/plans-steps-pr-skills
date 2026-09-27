@@ -1,0 +1,31 @@
+diff --git a/app.py b/app.py
+index 32a1d4f..16a9e47 100644
+--- a/app.py
++++ b/app.py
+@@ -1,4 +1,4 @@
+ def label(status):
+-    if status == "done":
++    if status in ("done", "ready"):
+         return "완료"
+     return "처리 중"
+diff --git a/fixtures/completed.json b/fixtures/completed.json
+index b548126..69b6778 100644
+--- a/fixtures/completed.json
++++ b/fixtures/completed.json
+@@ -1 +1 @@
+-{"id": 42, "status": "done"}
++{"id": 42, "status": "ready"}
+diff --git a/test_app.py b/test_app.py
+index a9d3230..f35b129 100644
+--- a/test_app.py
++++ b/test_app.py
+@@ -12,6 +12,9 @@ class StatusTests(unittest.TestCase):
+         job = self.fixture("completed.json")
+         self.assertEqual(label(job["status"]), "완료")
+
++    def test_legacy_completed(self):
++        self.assertEqual(label("done"), "완료")
++
+     def test_pending(self):
+         job = self.fixture("pending.json")
+         self.assertEqual(label(job["status"]), "처리 중")

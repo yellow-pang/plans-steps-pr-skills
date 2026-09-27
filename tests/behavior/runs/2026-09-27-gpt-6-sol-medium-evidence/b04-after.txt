@@ -1,0 +1,11 @@
+## 검토 결과
+
+1. **[높음] 저장·재조회 경로의 구현 계획이 빠져 있습니다.** 목표와 3번 항목은 DB 저장을 요구하지만, 현재 [service.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/service.py:4)는 파싱 결과를 그대로 반환하고 [repository.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/repository.py:5)는 호출되지 않습니다. 3번의 **실제 저장·재조회 검사는 유지**하되, 변환된 상태를 언제 저장하고 UI가 무엇을 조회하는지 연결하는 구현 단계를 명시해야 합니다. 이는 parser 오류 검사와 다른 실패 경로입니다.
+
+2. **[중간] 같은 parser 실패 검사가 세 층에 중복됩니다.** [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:6)의 service·controller·UI 검사는 현재 코드에서 모두 [parser.py](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/parser.py:1)의 동일한 실패가 그대로 전파되는지만 확인합니다. parser 실패 검사는 경계에 가까운 한 곳으로 합치고, 상위 층 검사는 오류 표현이나 화면 동작에 고유한 계약이 생길 때만 추가하는 편이 좋습니다. 5번의 정상 화면 흐름 검사는 유지할 가치가 있습니다.
+
+3. **[중간] `StatusEngine`은 현재 근거가 없는 추상화입니다.** [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:11)도 사용처가 API v2 하나이며 추가 이유가 미래 가능성이라고 밝힙니다. 4번을 제거하고, 1번의 작은 `adapter.py`는 **유지**하세요. 외부 `ready`를 내부 `done`으로 바꾸는 실제 계약 경계가 있으므로 adapter 자체는 필요한 변환입니다.
+
+추가로, `pending`의 내부 상태와 허용하지 않는 status의 처리 기준을 명시하면 완료 조건이 선명해집니다. 현재 parser는 문자열이면 모두 통과시키므로 [plan.md](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b04/plan.md:12)의 정상 `pending` 확인만으로 내부 `JobStatus` 계약을 검증하기 어렵습니다.
+
+검토는 `plan.md`, 요청한 스킬·Plan reference, 관련 소형 코드 5개에 한정했습니다. 파일 수정과 Git 명령은 실행하지 않았습니다.

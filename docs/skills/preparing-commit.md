@@ -1,0 +1,107 @@
+# preparing-commit 분석
+
+> 분석 기준: `main`과 동일한 `d7c0887`의 원문. 실제 모델 실행 시험이 아닌 정적 분석이다.
+> 이 문서의 “강제”는 프롬프트에 적힌 요구·금지를 뜻한다. 이를 집행하는 스크립트나 자동 gate는 없다.
+> 아래 금지는 이 스킬의 기본 역할 계약이며, 상위 지침이나 명시적 사용자 지시보다 우선하는 권한 장벽이라는 뜻은 아니다.
+
+## 1. 역할과 구성
+
+`preparing-commit`은 실제 Git 변경을 조사하여 커밋 메시지 후보와 분리안을 제안하는 스킬이다.
+커밋 실행기는 아니며, 파일 수정과 staging도 하지 않는다.
+구성 파일은 [`SKILL.md`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md) 하나이며 별도 템플릿, 스크립트, 에이전트 설정은 없다.
+
+| 구간 | 내용 | 기능 |
+| --- | --- | --- |
+| Frontmatter | 이름, 사용 조건 | 커밋 메시지·준비 요청 또는 구현 후 후보 작성의 유용성 판단 |
+| 핵심 원칙 | 실제 diff와 관련 untracked 근거 | 변경 없는 메시지 생성을 제한 |
+| 상태와 변경 확인 | staged/unstaged 구분 | 지금 커밋될 변경과 남은 변경을 분리 |
+| Untracked·비밀정보 보호 | 관련성, 읽기 범위, 민감 경로 | 기존 사용자 파일 혼입과 민감정보 출력을 억제 |
+| 커밋 분리와 prefix | 목적별 분리, Conventional Commit | 변경 단위와 제목을 정합하게 구성 |
+| 메시지 형식·금지 사항 | 한글 제목·본문, 실행 금지 | 산출물을 제안으로 한정 |
+
+## 2. 선택 조건과 간단 요청 감지
+
+[description](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md)에는 명시 요청과 선제적 판단이 함께 있다.
+“커밋 메시지”나 “커밋 준비”는 직접적인 선택 단서다.
+사용자가 요청하지 않아도 구현 완료 후 변경 분리 제안이 유용하다고 판단하면 선택 후보가 된다.
+다만 “유용한 경우”의 기준과 다른 스킬 종료 뒤 선택하는 주체는 정의하지 않는다.
+
+짧은 메시지 요청은 잘 포착할 문구를 갖추었다.
+반면 “작업 끝났어”만으로 자동 호출할지는 모델의 판단에 달려 있어 일관성을 보장하지 못한다.
+이 조건은 스킬 선택 범위이며, 자동으로 commit이나 파일 쓰기를 허용하는 조건은 아니다.
+
+## 3. 입력·산출물·절차
+
+입력은 사용자 요청, 저장소 커밋 관례, Git 상태, 실제 diff, 안전하게 확인한 관련 untracked 파일이다.
+산출물은 포함 범위를 구분한 메시지 후보, 필요 시 목적별 분리안, 제외·확인이 필요한 변경의 설명이다.
+
+1. 적용되는 저장소 지침과 커밋 관례를 확인한다.
+2. `git status --short`로 staged, unstaged, untracked를 구분한다.
+3. 민감할 가능성이 있는 경로를 먼저 선별한다.
+4. 나머지 staged와 unstaged의 diff를 확인한다.
+5. staged가 있으면 이를 메시지의 주 기준으로 삼고, 없으면 미 staging 후보임을 표시한다.
+6. untracked는 관련성과 민감정보 가능성을 확인한 뒤 최소한만 읽는다.
+7. 변경 목적이 독립적이면 분리안을 만들고, 메시지와 포함 범위를 제시한다.
+8. 변경이 없으면 메시지를 만들지 않고 그 사실만 보고한다.
+
+동일 파일의 staged/unstaged 혼재도 파일명이 아닌 각 diff의 내용으로 판단한다.
+이는 단순 파일 목록 요약보다 실제 커밋 범위를 정확히 설명하게 하는 장치다.
+근거: [상태와 변경 확인](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#상태와-변경-확인), [Untracked 파일](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#untracked-파일).
+
+## 4. 강제성 평가
+
+| 수준 | 원문 요구 | 평가 |
+| --- | --- | --- |
+| 필수 | 실제 diff 확인, staged 우선, 포함되지 않은 변경 별도 보고 | 근거와 현재 커밋 범위를 강하게 연결한다. |
+| 필수 금지 | 비밀정보 가능 내용·값 출력 금지 | 경로 선별은 명확하나 탐지 방법은 모델 판단이다. |
+| 조건부 필수 | 독립 목적이 함께 staged면 단일 메시지 생성 금지 | 안전하지만 작은 혼합 수정에서도 응답이 길어질 수 있다. |
+| 조건부 필수 | 변경이 없으면 후보 생성 금지 | 빈 커밋 메시지나 분석 내용의 커밋화를 막는다. |
+| 기본값 | 한글, 지정 prefix, 필요한 경우 본문 | 저장소 관례·사용자 의도와 조정할 여지가 있다. |
+| 판단 영역 | 관련 untracked, 독립 목적, scope·본문 필요성 | 구체 사례나 임계 기준이 없어 모델 편차가 남는다. |
+| 필수 금지 | 파일 수정, `git add`, commit, push, PR 생성 | 설명과 실제 Git 조작의 경계를 명확히 한다. |
+
+“하나의 목적”으로 묶이는 구현과 대응 테스트는 함께 설명할 여지가 있다.
+그러나 “독립적으로 되돌릴 수 있으면”이라는 기준은 기술적으로 분리 가능한 변경까지 과도하게 나눌 위험이 있다.
+사용자가 staging을 조정해야 한다는 안내는 스킬의 실행 금지와 일관되지만, 작업을 끝내려는 사용자에게 추가 단계가 된다.
+근거: [커밋 분리와 prefix](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#커밋-분리와-prefix), [변경이 없는 경우와 금지 사항](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#변경이-없는-경우와-금지-사항).
+
+## 5. 짧은 요청 시나리오 평가
+
+다음은 문구와 절차로 예상한 경로이며, 재현 시험 결과나 성공률이 아니다.
+
+| 요청과 상태 | 예상 경로 | 판단·한계 |
+| --- | --- | --- |
+| “커밋 메시지 한 줄만.” / 단일 staged 수정 | diff 확인 후 한글 Conventional Commit 제목 | 선택 적합도가 높다. 본문은 조건부여서 짧게 응답 가능하다. |
+| “커밋 준비해줘.” / unstaged만 존재 | 미 staging 상태를 밝히고 후보 제시 | 직접 단서가 있다. staging까지 기대했다면 산출물 불일치가 생긴다. |
+| “한 커밋으로 정리해줘.” / 독립 목적이 함께 staged | 기본 계약은 분리안과 staging 조정 안내 | 명시적 사용자 지시의 우선순위를 함께 판단해야 하는 경계 사례다. |
+| “커밋 메시지 줘.” / 변경 없음 | 변경 없음 보고, 메시지 미생성 | 불필요한 후보 생성을 잘 차단한다. |
+| “수정 끝났어.” / Git 변경 존재 | 유용성 판단에 따라 선택 가능 | 자동 선택의 경계가 불명확하여 불필요한 후속 제안 가능성이 있다. |
+
+짧은 요청을 놓치는 것보다 준비·실행 범위를 다르게 해석하는 문제가 더 크다.
+특히 “커밋해줘”라는 실행 요청을 담당자에게 넘기거나 완료까지 연결하는 절차는 이 스킬에 정의되어 있지 않다.
+
+## 6. 다른 스킬과의 경계
+
+[`implementation-workflow`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/implementation-workflow/SKILL.md#금지-사항)는 커밋 후보를 이 스킬의 독립 책임으로 둔다.
+동시에 명시 요청이 없는 후속 스킬 실행을 강제하지 않으므로, 구현 완료가 반드시 이 스킬 호출로 이어지는 흐름은 아니다.
+[`steps-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/steps-documentation/SKILL.md#금지-사항)과 [`pr-documentation`](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/pr-documentation/SKILL.md#금지-사항)은 커밋 메시지를 생성하지 않는다.
+기능 책임은 분리되어 있으나 “구현 완료 → 유용하니 후보 생성”과 “후속 스킬 강제 없음”의 적용 기준은 보완할 필요가 있다.
+
+또한 “분석만 수행했으면 메시지를 생성하지 않는다”는 [핵심 원칙](https://github.com/yellow-pang/plans-steps-pr-skills/blob/d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a/skills/preparing-commit/SKILL.md#핵심-원칙)은 해석 여지가 있다.
+현재 턴이 읽기 전용이어도 기존 staged 변경의 메시지를 요청할 수 있으므로, 기준이 “직접 구현 여부”인지 “커밋 가능한 변경 존재 여부”인지 명료화해야 한다.
+
+## 7. 유지 가치와 v3 개선 후보
+
+**유지할 가치가 큰 부분**은 실제 커밋 범위 우선, untracked 관련성 확인, 민감정보 최소 노출, 실행된 검증만 기록하는 원칙이다.
+한글 Conventional Commit과 필요 시 본문이라는 구성도 작은 요청에 대응하기 쉽다.
+
+| 개선 후보 | 이유 | 확인할 수용 기준 |
+| --- | --- | --- |
+| 명시 요청과 자동 제안 조건 분리 | “유용한 경우”의 폭을 줄인다. | 단순 구현 요청 뒤 후보가 불필요하게 생성되지 않는다. |
+| “준비”와 “실행” 요청 경계 명시 | 사용자의 staging·commit 기대를 구분한다. | 실행 요청에서 허용 범위와 담당 흐름을 정확히 안내한다. |
+| 목적별 분리 사례 제공 | 작은 기능과 대응 테스트까지 쪼개는 해석을 줄인다. | 같은 목적은 묶고 독립 변경만 분리한다. |
+| “분석만 수행” 조건 재정의 | 기존 변경의 메시지 요청을 막지 않게 한다. | 현재 턴 구현 여부와 무관하게 실제 변경을 기준으로 판단한다. |
+| 한 줄 모드와 혼합 변경 출력 예시 | 간단 요청의 응답 길이를 안정화한다. | 필요한 제한은 설명하되 전체 보고서를 강제하지 않는다. |
+
+종합하면 근거 확인과 Git 조작 경계는 강하고, 명시적 메시지 요청의 인식도는 높게 예상된다.
+v3에서는 선제 호출, 분리 기준, 준비·실행의 의미 차이를 먼저 정리할 가치가 있다.

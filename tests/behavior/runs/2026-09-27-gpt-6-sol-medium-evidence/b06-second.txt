@@ -1,0 +1,28 @@
+현재 **staged 변경**을 기준으로 한 커밋 메시지입니다.
+
+**제목**
+
+```text
+fix: API v2 상태 응답을 화면 상태에 맞게 해석
+```
+
+**내용**
+
+```text
+- ready 응답을 done으로 변환하고 status가 없으면 unknown을 반환
+- 두 경우의 테스트를 추가하고 API v2 동작을 README에 설명
+```
+
+**PR 설명 초안**
+
+```markdown
+## 변경 사항
+- 화면 라벨을 ‘작업 상태’로 변경
+- API v2의 ready 응답을 완료 상태로 해석하고, status가 없는 응답을 unknown으로 처리
+- 상태 변환 테스트와 README 설명 추가
+
+## 검증
+- 관련 테스트를 추가했으며, 실행 결과는 확인하지 않음
+```
+
+현재 브랜치에 **커밋된 변경은 화면 라벨 수정뿐**입니다. API 처리·테스트·README 변경은 staged 상태라 아직 PR에 포함되지 않습니다. `parser.py`의 unstaged `print` 문과 untracked `notes.txt`는 위 메시지에서 제외했습니다. 원격 저장소와 PR 기준 브랜치가 없어 실제 PR diff는 확정할 수 없습니다. 파일과 Git 상태는 변경하지 않았습니다.

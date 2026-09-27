@@ -1,0 +1,4 @@
+fix: API v2 ready 상태를 완료로 처리
+
+- 파서에서 ready를 done으로 변환하고 다른 상태는 그대로 반환
+- ready 상태 테스트와 README 설명 추가

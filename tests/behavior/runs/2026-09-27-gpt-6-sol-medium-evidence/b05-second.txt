@@ -1,0 +1,5 @@
+[implementation-workflow 스킬](C:/Dev/plans-steps-pr-skills/skills/implementation-workflow/SKILL.md)과 [검증 기준](C:/Dev/plans-steps-pr-skills/skills/implementation-workflow/references/verification.md)을 적용했습니다.
+
+이전 `verification.json`과 `run-log.txt`의 PASS는 현재 설정에 재사용할 수 없습니다. `app.py`와 `verify.py`의 해시는 기록과 같지만, [config.json](C:/Dev/plans-steps-pr-skills/.v3-eval-remaining/b05/config.json)의 해시와 값이 달라졌습니다(`ok` → `bad`).
+
+기록된 명령 `py -3.10 -B verify.py`를 Python 3.10.6에서 다시 실행한 결과, `configured mode must be ok` 단언이 실패했고 종료 코드는 1이었습니다. 파일은 수정하지 않았으며, Git 상태에는 기존 `config.json` 변경만 남아 있습니다.
