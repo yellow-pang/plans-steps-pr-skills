@@ -1,139 +1,159 @@
 # v3 스킬 업그레이드 중간 인계
 
-작성 기준: 2026-09-27 13:09 KST. **기존 스킬 분석과 문서 10개의 커밋은 완료됐고, v3 스킬 설계·구현은 아직 시작하지 않았다.** 이 문서를 먼저 읽고, 필요한 상세 문서만 이어서 확인하면 된다. 이후 사용자 지시와 실제 Git 상태가 이 스냅샷보다 우선한다.
+갱신 기준: 2026-09-27, 후속 구체 설계 요청 반영. **v3의 구현 가능한 추천 설계를 완성했다. 실제 Skill 구현·설치·행동 평가는 아직 시작하지 않았다.** 현재 사용자 요청은 설계 문서와 handoff 갱신까지다. 이후 사용자 지시와 실제 Git 상태가 이 스냅샷보다 우선한다.
 
-## 1. 사용자 목표와 현재 요청
+## 1. 현재 요청과 완료 지점
 
-사용자는 기존 스킬이 현재 자신의 작업 방식과 달라 업그레이드하려 한다. v2는 플러그인 개발·테스트 중 문제와 충돌을 겪었으므로 해당 브랜치를 보존하고, main에서 시작한 v3 브랜치에서 새로 진행하려는 의도다.
+기존 5개 Skill 분석·문서화와 최초 인계는 커밋 완료됐다. 이후 실제 개발 workflow 요구를 문서에 반영했고, 준비도가 충분하다는 검토를 거쳐 이번에는 **역할·입출력·진입/종료·인계·공통 원칙·Context·Git 실행·평가·첫 구현 범위**를 구체화했다.
 
-먼저 요청한 작업은 기존 스킬 각각의 구성·흐름·내용·강제성·간단한 요청 처리 능력을 분석해 `docs/`에 문서화하는 것이었다. 이 작업과 사용자가 후속 요청한 커밋은 완료했다. 현재 요청은 컨텍스트 압축 후에도 진행 상황과 다음 작업을 복구할 수 있는 인계 문서 작성이다.
+이번에 추가로 확정된 사용자 결정은 **Commit·Push·PR의 PREPARE/EXECUTE 지원**이다. 메시지/설명 요청과 실제 실행 요청을 구분한다. 설계자가 합리적으로 정할 구조·이름·파일 배치를 더 이상 전부 사용자 미결정으로 남기지 말라는 요청도 반영했다.
 
-사용자가 현재 쓰는 개발 절차의 구체적인 규칙은 아직 설명하지 않았다. 아래 개선 후보를 사용자 선호나 확정된 v3 요구사항으로 취급하면 안 된다.
+원본 요구는 2026-09-27의 두 첨부문이다. 최초 workflow는 `da4cdaa9-807c-46e4-a843-d26f83d4e8a6`, 후속 구체 설계는 `a351945f-d3e2-4aba-9575-a7291730b687` 아래의 `붙여넣은 텍스트.txt`다. 전체 로컬 경로와 상세 내용은 [04 구체 설계](../04-v3-upgrade-considerations.md)에 기록했다.
 
-## 2. 재개에 필요한 Git 상태
+현재 범위:
 
-| 항목 | 이 문서 작성 직전 확인값 |
+- 실제 `SKILL.md`·Plugin·캐시를 변경하지 않는다. 현재 존재하는 Skill은 여전히 main의 5개다.
+- 기존 branch/worktree와 기존 미커밋 문서 변경을 유지한다. 새 branch/worktree·commit·push·PR을 만들지 않는다.
+- 기존 main/v2 사실 분석을 보존하고, 사용자 확정 요구와 추천 설계를 구별한다.
+- 새 설계 문서를 늘리지 않고 04에 상세 설계를 통합한다. 이 문서는 재개에 필요한 결정과 근거만 남긴다.
+
+## 2. Git 스냅샷과 이력
+
+| 항목 | 이번 구체 설계 시작 시 확인값 |
 |---|---|
-| 작업 경로 | `C:/Dev/plans-steps-pr-skills` |
-| 작업 셸 | PowerShell |
-| 현재 브랜치 | `feat/skill-v3-upgrade` |
-| HEAD / 분석 문서 커밋 | `44f58614f3387ac328c78c052e8ca8421f083148` |
-| main / 기존 스킬 기준 | `d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a` |
-| 보존할 v2 브랜치 | `feature/gated-development-v2` |
-| v2 기준 커밋 | `eb70e3f72dcbe23bc76245e3b8ad12f841279154` |
-| 로컬 `origin/feat/skill-v3-upgrade` | HEAD와 동일, ahead/behind `0 / 0` |
-| 인계 문서 작성 전 working tree | clean |
-| 이번 작성으로 생기는 변경 | 이 인계 파일 추가 및 `docs/README.md`의 인계 링크 추가 |
+| 경로·셸 | `C:/Dev/plans-steps-pr-skills`, PowerShell |
+| 작업 branch | `feat/skill-v3-upgrade` |
+| HEAD / 최초 인계 커밋 | `53da0de4951d990895b3eb2eebea4e9786be77b3` |
+| 기존 분석 커밋 | `44f58614f3387ac328c78c052e8ca8421f083148` |
+| main / 원문 기준 | `d7c0887e8d8fe2a4ca847c821a46f85bfba88e7a` |
+| 보존할 v2 | `feature/gated-development-v2` / `eb70e3f72dcbe23bc76245e3b8ad12f841279154` |
+| 로컬 origin/feat/skill-v3-upgrade | `44f58614f3387ac328c78c052e8ca8421f083148`, HEAD가 1커밋 앞섬 |
+| 시작 working tree | 이전 요구 반영의 문서 4개가 이미 수정됨: 04·docs README·handoff·구현 Skill 분석 |
+| 이번 문서 범위 | 위 4개를 이어서 갱신하고 02의 향후 평가 절에 현재 카탈로그 방침을 연결 |
 
-이 값은 로컬 Git 참조를 조회한 결과이며 이번 턴에 fetch나 원격 서버 조회는 하지 않았다. 이전 커밋 직후에는 ahead 1이었으나 현재 조회값은 0/0이다. 상태가 바뀐 경위를 추정하거나 이 에이전트가 push했다고 보고하지 않는다.
+로컬 참조만 조회했고 fetch·원격 조회는 하지 않았다. 이전 요구 반영 시작 때 clean이었다는 기록과 현재 시작 상태를 혼동하지 않는다. 최초 인계 작성 시 HEAD `44f5861`·ahead/behind 0/0, 이후 사용자 요청으로 인계가 `53da0de`에 커밋됐다. 이번 두 문서 갱신 단계는 커밋하지 않았다.
 
-v3 브랜치는 최초 분석 시작 전부터 존재했고 당시 main과 같은 커밋이었다. 기존 `skills/` 5개와 루트 README·LICENSE는 현재도 main과 동일하다. 분석 커밋은 `docs/` 10개, 996줄 추가만 포함한다. 인계 문서와 색인 수정은 그 커밋 이후의 새 변경이며, 이 문서 작성 작업에서는 추가 커밋을 수행하지 않는다.
+최종 조회에서는 로컬 `origin/feat/skill-v3-upgrade`도 `53da0de`로 바뀌어 ahead/behind가 `0 / 0`이었다. 위 표의 시작값과 구분한다. 이 작업에서는 push/fetch를 실행하지 않았으며 참조가 바뀐 경위는 추정하지 않는다.
 
-완료한 커밋 메시지:
+원래 분석 커밋은 `docs/` 10개·996줄 추가, 인계 커밋은 handoff와 목차 연결이다. 현재 `skills/` 5개와 루트 README·LICENSE가 main과 동일함을 다시 확인했다.
 
-```text
-docs: 기존 스킬 분석과 v3 업그레이드 검토 내용 정리
+## 3. 다음 구현에 사용할 추천 구조
 
-- 기존 스킬 5개의 구성, 실행 흐름, 강제 규칙을 문서화
-- 간단한 요청과 경계 사례 24개를 정적 평가
-- v2 실험 기록을 비교하고 v3 개선 후보를 정리
-```
+추천안은 **독립 Skill 7개**다. 새 역할 두 개는 반복되는 독립 분석·검토 요청에서 도출했다. 개수 자체가 사용자 지정은 아니며 아래 구조가 이번 설계 결과다.
 
-## 3. 분석 결과를 복구할 최소 자료
+| 추천 Skill | 핵심 책임·종료 지점 | 현재 소스와의 관계 |
+|---|---|---|
+| analyzing-work | 요구·구조·lifecycle·영향 조사, 필요 시 Context. 근거 있는 결론/미확정과 인계에서 종료 | 신규 |
+| task-planning | 앞으로 할 변경·대안·완료·검증 계획. Plan-only면 종료, 이미 구현까지 요청됐으면 해당 범위 진행 | 기존 개편 |
+| reviewing-development-work | 분석·Plan·실제 구현 세 대상의 근거 기반 검토. 문제·영향·필요 조치·한계 보고 | 신규; Plan Review만 따로 분리하지 않음 |
+| implementation-workflow | 명확한 요청/Plan의 실제 수정·필요 검증·완료 보고 | 기존 개편; 자체 조사와 직접 구현 유지 |
+| steps-documentation | 실제 배경·문제·변경 이유·전후 구조/흐름·검증·제한 설명 | 책임 유지·보강 |
+| commit-workflow | Commit/Push PREPARE 또는 요청된 EXECUTE의 실제 결과 확인 | preparing-commit에서 이동·확대 |
+| pr-workflow | PR 제목/본문 PREPARE 또는 생성/갱신 EXECUTE | pr-documentation에서 이동·확대 |
 
-| 읽을 시점 | 자료 |
-|---|---|
-| 전체 목차·평가 요약 필요 | [docs/README.md](../README.md) |
-| v3 요구사항을 논의할 때 | [04-v3-upgrade-considerations.md](../04-v3-upgrade-considerations.md) |
-| 요청 선택·강제성의 근거가 필요할 때 | [02-enforcement-and-request-evaluation.md](../02-enforcement-and-request-evaluation.md), Q01~Q24 |
-| 스킬 사이 전체 흐름 확인 | [01-structure-and-flow.md](../01-structure-and-flow.md), Mermaid 포함 |
-| v2 문제·설치 환경을 검토할 때 | [03-v2-context.md](../03-v2-context.md) |
+정확한 책임·진입·입출력·종료·인계·H/D/P는 [04의 5절](../04-v3-upgrade-considerations.md#5-제안하는-v3-skill-구조와-인계), 원문 대비 근거는 [6절](../04-v3-upgrade-considerations.md#6-현재-main의-5개-skill-변경-매핑)에 있다.
 
-스킬별 상세 분석과 수정할 원본:
+공통 router·상태 머신·Plan digest·별도 Context Skill을 추가하지 않는다. 각 Skill의 짧은 핵심과 **자기 폴더 안 reference**로 독립 설치를 보존한다. sibling Skill·저장소 루트 정책 파일 의존이나 원칙 복제 생성기를 도입하지 않는다. 파일 목록은 [7절](../04-v3-upgrade-considerations.md#7-공통-원칙-배치와-최초-파일-구성)에 있다.
 
-| 스킬 | 상세 분석 | 원본 | 가장 중요한 판단 |
-|---|---|---|---|
-| task-planning | [분석](../skills/task-planning.md) | [SKILL.md](../../skills/task-planning/SKILL.md) | 계획과 승인 대기 역할은 명확하지만 언제 계획이 필요한지 판단 기준이 넓음 |
-| implementation-workflow | [분석](../skills/implementation-workflow.md) | [SKILL.md](../../skills/implementation-workflow/SKILL.md) | 범위가 명확하면 Plan 없이 직접 구현 가능; 작은 작업의 중심 |
-| preparing-commit | [분석](../skills/preparing-commit.md) | [SKILL.md](../../skills/preparing-commit/SKILL.md) | staged 범위·관련 untracked 선별이 구체적; 메시지 준비와 실행의 연결은 없음 |
-| steps-documentation | [분석](../skills/steps-documentation.md) | [SKILL.md](../../skills/steps-documentation/SKILL.md) | 완료 사실과 검증 근거 중심; 장기 기록이 필요한 조건은 모델 판단 |
-| pr-documentation | [분석](../skills/pr-documentation.md) | [SKILL.md](../../skills/pr-documentation/SKILL.md) | 명시적인 PR 설명 요청을 다룸; 실제 PR 발행은 담당하지 않음 |
+## 4. 반드시 이어받을 동작 결정
 
-한 번에 모든 문서·모든 v2 파일을 다시 읽을 필요는 없다. 질문과 수정 대상에 맞는 문서만 읽어 컨텍스트 사용량을 줄인다. 이후 원본을 수정할 때 이번 분석의 기준 SHA는 `d7c0887`이라는 점을 유지한다.
+- **Superpowers 비사용**, Superpowers·Spec Kit·BMAD는 참고 자료. 주 환경은 **GPT-5.6 Sol Medium**이며 실제 성능은 아직 검증하지 않았다.
+- 분석은 관련 데이터·상태·API·DB·async·Browser/provider·event·consumer·UI 경계를 추적하고, 관련 producer/consumer·상태 전이·추가 영향이 닫혔다는 근거에서 멈춘다. 항상 저장소 전체를 조사하지 않는다.
+- `최소 변경/최소 수정` 문구는 “영향을 먼저 확인하고, 요구와 확인된 영향을 해결할 만큼 수정하며 무관 변경은 배제”로 대체한다.
+- 현재 상태는 코드/runtime/관측으로 확인한다. 최신 사용자 요구·합의된 계약은 원하는 동작을 정의한다. 기존 버그나 낡은 Context를 최신 요구보다 우선하지 않는다.
+- Observe before encode: 관측 → 의미/안정성 판단 → 필요한 구현/계약화. 미관측은 가정, 합성 오류는 시뮬레이션으로 구분한다. 내부 로직·확인된 계약의 mock/TDD는 허용한다.
+- 테스트는 유효한 동작을 보호한다. 기존 기대값을 수정/제거하려면 요구·runtime·유효 계약과의 불일치 및 남는 보호 범위를 설명한다. GREEN 목적만으로 유효 검증을 없애지 않는다.
+- 새 테스트는 고유 실패 보호로 판단한다. 다른 경계를 보호하는 중첩은 허용한다. 파일/class 수나 테스트 수로 품질을 판정하지 않는다.
+- 검증은 관련 내용·dependency/config·환경·입력·위험·실행 근거가 유효하면 재사용한다. HEAD만 같다고 충분하지 않고 commit으로 SHA만 달라져도 관련 내용이 같으면 재사용할 수 있다.
+- Plan/검토에서 abstraction·validation/state/metadata·coupling·유지보수·합리적 확장을 본다. 규모와 관련될 때만 시간·공간·IO·Browser·concurrency 비용을 본다.
+- H는 사실성·권한·변경 보존, D는 상황 판단, P는 편의 절차다. 문서·독립 검토·메시지 사전 확인을 모든 작업의 선행 gate로 만들지 않는다.
+- “분석만/계획만/검토만”은 그 산출물에서 끝난다. 이미 구현까지 요청됐으면 같은 승인 재질문 없이 이어간다. 새 제품 의미·범위·외부 영향의 실제 선택만 확인한다.
 
-## 4. 반드시 보존할 분석 결론
+### Context와 Steps
 
-1. **main은 5개의 독립 스킬이다.** Plan → 구현 → Steps → Commit → PR을 매번 강제하는 파이프라인이 아니다. 선행 문서 부재도 일괄 중단 사유가 아니다.
-2. **선택과 수행을 구분해야 한다.** description이 적절한 스킬을 고르게 하는지와, 본문을 읽은 뒤 규칙을 지키는지는 별도 문제다. 스킬의 금지 문구는 그 역할의 기본 지침이며 도구 권한을 기술적으로 막는 장치는 아니다. 명시 사용자 지시·상위 실행 지침보다 우선한다고 확대하지 않는다.
-3. **작은 요청을 처리할 기반은 있다.** 구현은 명확한 요청을 직접 수행하고, 요청하지 않은 후속 스킬·기록을 강제하지 않는다. 반면 계획·PR 설명의 축약 기준과 위험에 비례한 검증 기준은 부족하다.
-4. **주요 모호성은 선택 경계다.** 계획의 “결정 필요”, 커밋 준비의 “유용한 경우”, Steps의 “장기 기록 필요”가 넓다. “개선해줘”, “정리해줘”와 복합 요청의 처리 방식이 달라질 수 있다.
-5. **기존 승인과 완료 지점의 연결이 약하다.** 받은 승인을 어떤 범위까지 재사용할지, 구현·기록·메시지·실제 commit·PR 발행을 요청했을 때 누가 끝까지 이어갈지 상세 기준이 없다.
-6. **유지할 강점은 근거 중심 작업이다.** 실제 diff·코드·검증 기록 우선, 사용자 변경 보존, staged/unstaged/untracked 구분, 파일 요청과 응답 요청 구분, 저장소 관례 존중이 일관된 가치다.
-7. **현재 평가는 정적 분석이다.** Q01~Q24는 예상 동작이며 실제 모델 인식률·통과율·비용 측정 결과가 아니다. 문서·링크 검증 통과를 스킬의 행동 성공으로 바꾸어 표현하지 않는다.
+Context는 긴 조사·여러 경계/세션 또는 명시 인계 요청에서 필요한 지식이 누적될 때 선택적으로 만든다. 기본 생성 책임은 분석 역할, 이후 갱신은 중요한 사실/결정을 바꾼 현재 역할이다. 기본 경로는 사용자/저장소 관례가 없을 때 `docs/context/<task-slug>.md`다.
 
-## 5. v2를 다시 다룰 때 알아야 할 사실
+명령 일지와 파일 열람 목록을 남기지 않는다. 완료·취소 시 중요한 지속 결정은 Steps/기존 문서와 연결하고 Context를 동결하며 자동 삭제하지 않는다. 새 세션은 Context에서 복구한 뒤 실제 코드·환경·증거를 확인하고 바뀐 부분만 조사한다. 읽기 전용이면 응답 인계로 대체한다. 자세한 lifecycle은 [8절](../04-v3-upgrade-considerations.md#8-context-lifecycle과-plansteps-연결)에 있다.
 
-v2는 총괄 `running-gated-development`와 전문 스킬 6개, 총 7개를 플러그인으로 묶었다. Mode/Risk, Plan digest, 승인·검증·commit·Draft PR·검토 절차와 평가 도구가 추가됐다. 이것을 v3 구조로 채택하기로 결정한 적은 없다.
+Plan은 앞으로 할 일, Steps는 실제로 달라진 결과다. Steps의 배경·문제·이유·흐름·검증 설명은 main에도 이미 있는 책임이며 v3에서 전후 비교·필요한 표/Mermaid를 보강한다. 짧은 로그를 새 보고서로 전환했다고 과거 역할을 왜곡하지 않는다.
 
-2026-08-15의 기존 기록에는 설치·직접 호출 성공, explicit 본문 계약 GREEN, 자연어 implicit discovery RED가 함께 남아 있다. 자연어 평가에서 스킬 수정 patch를 시도했고 read-only sandbox가 차단했다. 격리 환경은 구조 확인까지 했지만 인증 부재로 `BLOCKED_AUTH`, 행동 평가 호출은 0회였다. 실패 원인은 플러그인·모델·다른 스킬·환경 중 어느 것으로도 확정되지 않았다.
+### PREPARE / EXECUTE
 
-현재 대화에는 다음 위치의 **설치된 v2 계열 스킬**도 노출되어 있었다.
+PREPARE는 산출물만 준비하고 index·HEAD·remote·PR을 바꾸지 않는다. EXECUTE는 명시 요청·현재 권한·확정 범위에서만 수행한다.
+
+- Commit 요청: 필요한 선택 staging과 commit까지. Push/PR은 자동 포함하지 않는다.
+- Push 요청: 기존 commit의 확인된 remote/ref push까지. 미커밋 변경 commit은 포함하지 않는다.
+- PR 생성 요청: 확정된 committed head의 필요한 일반 push와 PR 생성/조회. 미커밋 변경·무관 commit을 임의 포함하지 않는다.
+- 지정 PR 설명 갱신: 요청된 title/body 갱신까지. reviewer·merge 등을 추가하지 않는다.
+- 이미 전체 실행을 요청했다면 단계마다 같은 권한을 다시 묻지 않는다.
+- staged/unstaged/untracked와 같은 파일의 hunk를 구분해 기존 index·제외 변경을 보존한다.
+- timeout 후 실제 상태를 먼저 확인하고 중복 commit/PR을 만들지 않는다. 부분 실패는 완료·실패/미확인·보존 상태·다음 조치를 보고한다.
+
+GitHub/Gitea에 구조를 고정하지 않는다. 실제 사용 가능한 CLI/API/connector 기능을 확인해 선택하고 첫 구현에 SDK/adapter registry를 만들지 않는다. 지원 도구가 없으면 완성한 준비 자료와 미완료 실행을 남긴다. 상세 권한·실행 계약은 [9절](../04-v3-upgrade-considerations.md#9-prepare--execute와-provider-경계)에 있다.
+
+## 5. 원문 사실과 미확인 자료
+
+main은 독립 Skill 5개이고 강제 전체 파이프라인이 아니다. Plan 없는 명확한 구현, 실제 diff·실행 근거, 사용자 변경 보존, staged/unstaged/untracked 구별, 파일 요청/응답 구별이 기존 강점이다.
+
+main 구현 원문 24·30행에 최소 수정, 28행에 producer/consumer 확인이 함께 있다. main에 TDD/mock/fixture 강제나 commit/PR마다 전체 검증 반복 규칙은 없다. v2는 선행 RED와 correct test 보호뿐 아니라 같은 HEAD·환경·입력의 근거 재사용을 이미 지원하며, PR 검토에서 lifecycle도 확인한다. 이번 요구를 그 규칙이 과거 문제를 실제 유발했다는 원인 증거로 바꾸지 않는다.
+
+**ponytail은 미확인으로 이번 핵심 설계/첫 구현에서 제외한다.** 이전 단계에서 worktree의 숨김·ignore 포함 파일/본문(.git 제외), tracked/untracked/ignored, main·v2·HEAD에서 실물을 발견하지 못했다. 전역 설치·다른 프로젝트는 조사하지 않았다. 지금 검색되는 설계 문서의 이름 언급은 구현 발견이 아니다.
+
+현재 설치 v2 계열 위치는 다음과 같으며 main 소스와 별개다.
 
 ```text
 C:/Users/bigbros/.codex/plugins/cache/yellow-pang-workflows/plans-steps-pr-skills/2.0.0/skills
 ```
 
-저장소의 main 기반 스킬 소스와 설치 캐시는 별개다. 브랜치를 바꿔도 캐시가 함께 바뀌는 것으로 가정하지 않는다. 현재 캐시와 v2 HEAD의 전체 해시 일치는 이번 분석에서 확인하지 않았다. 과거에도 구 캐시 때문에 평가를 무효 처리한 기록이 있어, 행동 평가를 시작할 때는 실제 노출·읽힌 스킬 경로와 버전을 확인해야 한다.
+v2의 과거 explicit GREEN / implicit RED / clean profile BLOCKED_AUTH(행동 호출 0) 기록은 [03 문서](../03-v2-context.md)를 따른다. 실패 원인은 Plugin·모델·Skill 경쟁·환경으로 분리되지 않았고 현재 캐시/v2 전체 해시 일치도 확인하지 않았다. v2 재실험·복구·병합·재설치는 현재 요청이 아니다.
 
-v2의 과거 handoff에는 별도 인증·실험 재개 순서가 있지만 **이번 사용자는 v2 실험 재개를 요청하지 않았다.** 해당 기록은 분석 근거다. 원인 조사 없이 v2를 복구·병합하거나 캐시를 교체하는 작업으로 이어가지 않는다.
+## 6. 남은 사용자 결정과 다음 구현 작업
 
-## 6. 다음에 할 일
+**현재 핵심 설계에 반드시 필요한 추가 사용자 선택은 없다.** 파일 위치·이름·7개 구성·Plan/Review 분리·공통 원칙 배치는 추천안으로 정했고 PREPARE/EXECUTE는 사용자가 확정했다. 실제 구현 요청을 받으면 이 기준으로 진행할 수 있다. 현재 설계 요청을 구현 허가로 바꾸지 않는다.
 
-현재 남은 다음 단계는 **사용자의 실제 작업 방식과 기대 산출물을 구체화하여 v3 요구사항을 정리하는 것**이다. 다음 표는 아직 미결정이며, 새로운 메시지에서 답이 주어지면 이를 반영하고 같은 질문을 반복하지 않는다.
+다음 구현 시 필요한 순서:
 
-| 미결정 사항 | 확인할 내용 |
-|---|---|
-| 계획을 먼저 만드는 조건 | 계획 요청 때만인지, 영향 큰 변경에도 필요한지 |
-| 구현 후 기본 산출물 | 완료 보고·Steps·커밋 후보 중 어디까지 원하는지 |
-| Git 작업의 책임 | 준비 전용인지, 명시 요청 시 commit·push·PR까지 수행할지 |
-| 문서 위치·언어 | 저장소 관례와 개인 기본값을 어떻게 적용할지 |
-| 배포 형태 | 독립 스킬인지, 플러그인인지, 단계적으로 패키징할지 |
+1. 현재 Git 상태와 미커밋 문서를 확인하고 보존한다. 04의 5~11절과 수정할 main 원문만 읽는다.
+2. 신규 분석/검토, 기존 Plan/구현/Steps 개편, Git 두 Skill 이동·확대를 수행한다. 각 본문의 핵심과 7절 reference를 작성한다.
+3. 루트 README의 역할·이름 안내와 역사 분석의 고정 SHA 원문 링크를 갱신한다. 구/신 이름의 이중 Skill alias를 만들지 않는다.
+4. `tests/behavior/cases.md`로 초기 행동 사례를 재현 가능한 입력·기대 행동·실패 판정까지 구체화하고 정적 검사를 한다.
+5. 격리된 대상 환경에서 관련 행동 사례를 실행해 실제 결과만 보고한다. Plugin 설치·provider 실서비스 실행·commit/push/PR은 그 시점 사용자 요청과 환경 권한에 따라 별도로 판단한다.
 
-권장 진행 순서:
+먼저 읽을 원문은 [Plan](../../skills/task-planning/SKILL.md), [구현](../../skills/implementation-workflow/SKILL.md), [Steps](../../skills/steps-documentation/SKILL.md), [커밋 준비](../../skills/preparing-commit/SKILL.md), [PR 설명](../../skills/pr-documentation/SKILL.md)이다. 적용 가능한 저장소 지침을 다시 확인한다. 이번에는 상위·루트·하위에서 AGENTS.md가 발견되지 않았다.
 
-1. 최신 사용자 요청과 Git 상태를 확인한다. 이 인계 문서가 미커밋 상태이면 기존 작업으로 보존한다.
-2. 실제 사용하는 짧은 요청과 기대 종료 상태를 몇 개 대응시킨다. “고쳐줘”, “정리해줘”, “계획부터 구현까지”, “커밋해줘”가 대표 사례다. 필요하면 가장 중요한 차이부터 간단히 질문한다.
-3. 합의된 내용과 분석자의 제안을 구분해 v3 요구사항을 정리한다. 선택 조건, 승인 재사용, 문서 생성, 완료 지점부터 결정한다.
-4. 정해진 범위에 맞춰 스킬 구조·본문의 변경안을 만들고 구현한다. 기존 분석을 다시 수행하거나 모든 작업에 일률적인 계획·재승인 절차를 붙이지 않는다.
-5. 형식·링크 확인 후 실제 행동 검증이 필요하면 Q01~Q24 중 관련 사례부터 평가한다. 명시 호출과 자연어 선택을 구분하고, 모델·노출 스킬·입력 조건과 실제 실행 결과를 기록한다.
+## 7. 검증 계획과 실제 검증 이력
 
-이 순서는 다음 설계를 위한 제안이다. 현재 v3 구현 범위와 배포 형태는 미확정이고, 장시간 모델 실험·플러그인 재설치도 수행하지 않았다. 이 문서 작성 요청의 완료 범위는 인계 문서와 색인 연결이다.
+초기 행동 평가는 B01 작은 변경, B02 lifecycle·새 세션·Steps, B03 외부 관측·잘못된 fixture, B04 Plan 중복/복잡도 검토, B05 증거 재사용/무효화, B06 PREPARE, B07 EXECUTE·응답 유실의 7개다. 입력·고유 실패·기존 Q와의 관계·종류는 [10절](../04-v3-upgrade-considerations.md#10-테스트와-검증-계획)에 있다. Q01~Q24는 카탈로그이며 전체 상시 regression이 아니다.
 
-## 7. 완료된 검증과 재개 시 조회
+자연어 선택과 선택 후 행동을 구분한다. 대상은 GPT-5.6 Sol Medium, 실제 노출된 v3 버전·경로를 확인하고 v2를 섞지 않는다. 7개 사례는 호출 7회를 뜻하지 않는다. 새 세션·후속 요청이 필요한 사례는 해당 의미를 평가한다. 통제된 fixture/provider 도구 결과를 실서비스 계약·통합 성공으로 보고하지 않는다.
 
-기존 분석 문서 10개에 대해 내부 링크·앵커 105개, 고정 SHA 참조 경로 23개, 공백·코드 블록 짝을 검사했다. 당시 기존 추적 파일 7개가 기준 원본과 동일함을 확인했다. 이후 `44f5861` 커밋 전후 `git diff --check`도 통과했다. Mermaid 실제 렌더링과 새 모델 세션에서의 동작 실험은 실행하지 않았다.
+과거 검증 이력:
 
-`docs/README.md`의 기존 검증 수치와 “아직 커밋하지 않음” 서술은 최초 분석 당시 기록이다. 최신 진행 상황은 이 인계와 실제 Git을 함께 확인한다.
+- 최초 분석: 문서 10개, 내부 링크·앵커 105개, 고정 SHA 경로 23개 확인.
+- 최초 handoff 추가: 로컬 링크 31개 확인, 문서 커밋 전후 diff 형식 검사 통과.
+- 앞선 사용자 요구 반영: 문서 11개, 내부 링크·앵커 119개, 중복 제외 고정 SHA 18경로 확인, 문서 4개 변경·원본 보존 확인.
+
+이는 당시 결과이며 이번 구체 설계의 검사 수치가 아니다. 이번 문서 검증 결과는 [docs README](../README.md#구체-설계-검증)에 별도로 남긴다. 실제 Skill 행동 평가·Mermaid 렌더링·Browser/PR 실행은 아직 하지 않았다.
 
 ```powershell
 Set-Location 'C:/Dev/plans-steps-pr-skills'
 git status --short --branch
 git log -3 --oneline
 git rev-parse HEAD main feature/gated-development-v2
-git rev-list --left-right --count 'HEAD...@{u}'
+git diff --stat
+git diff d7c0887 -- skills README.md LICENSE
 ```
 
-이전에 로컬 커밋을 할 때 sandbox가 `.git/index.lock` 생성을 막았고, 명시적으로 요청된 커밋에 대해 Git 쓰기 권한을 요청해 성공했다. 같은 오류가 나면 스킬 충돌로 단정하지 말고 실제 권한 제한을 확인한다. 이 정보는 환경 이력이며 새 요청의 승인 여부는 현재 대화에서 판단한다.
-
-## 8. 다음 세션에 붙여넣을 재개 문장
+## 8. 다음 세션 재개 문장
 
 ```text
-C:/Dev/plans-steps-pr-skills에서 v3 스킬 업그레이드 논의를 이어가자.
-먼저 docs/handoffs/2026-09-27-v3-analysis-handoff.md를 읽고 현재 Git 상태를 확인해줘.
-기존 스킬 분석 문서 10개는 44f5861에 커밋됐고, v3 스킬 구현은 아직 시작하지 않았어.
-v2 브랜치는 보존하며, 기존 분석과 설치된 v2 캐시를 구분해서 봐줘.
-현재 단계와 미결정 사항을 짧게 확인한 다음, 내가 사용하는 작업 방식에 맞춰
-v3 요구사항을 구체화하자. 필요한 상세 문서만 읽고 중복 분석은 줄여줘.
+C:/Dev/plans-steps-pr-skills의 v3 작업을 이어가자.
+docs/handoffs/2026-09-27-v3-analysis-handoff.md와 현재 Git 상태를 먼저 확인해줘.
+현재는 구현 가능한 추천 설계까지 완료됐고 실제 Skill 구현은 아직 시작하지 않았어.
+docs/04-v3-upgrade-considerations.md의 7개 독립 Skill 구조와 첫 구현 범위를 기준으로 봐줘.
+PREPARE/EXECUTE는 확정 요구이고, Context와 통합 검토 책임·파일 배치도 추천안이 정해졌어.
+Superpowers 비사용, GPT-5.6 Sol Medium 대상, ponytail 미확인 제외를 유지해줘.
+미커밋 문서 변경과 main/v2의 과거 사실을 보존하고 내가 이번 세션에 요청한 범위에서 진행해줘.
 ```
 
-진행 단계가 바뀌면 이 문서의 기준 시점·Git 상태·완료한 작업·남은 결정부터 갱신한다. 확정한 사용자 결정은 근거와 함께 기록하고 제안과 구분한다.
+진행 단계가 바뀌면 현재 상태·Git 스냅샷·실제 완료 범위·검증 근거부터 갱신한다. 추천 설계, 사용자 확정 요구, 구현 결과와 실측 증거를 구분한다.
