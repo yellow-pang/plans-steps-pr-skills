@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# 리뷰와 대화는 한국어로 작성합니다.
+language: ko-KR
+
+reviews:
+  # 테스트 중에는 폭넓은 피드백을 받습니다. 의견이 너무 많으면 chill로 조정합니다.
+  profile: assertive
+
+  auto_review:
+    # PR을 열면 자동으로 리뷰합니다.
+    enabled: true
+    # 초안 PR은 준비 중으로 보고 자동 리뷰하지 않습니다.
+    drafts: false
+    # GitHub 기본 브랜치(main)는 별도 지정 없이 자동 리뷰 대상입니다.
+    # base_branches는 기본 브랜치 외에 추가할 대상 브랜치가 있을 때 사용합니다.
+    # 예: develop에도 PR을 보낸다면 아래 주석을 해제합니다.
+    # base_branches:
+    #   - "^develop$"
+
+  # 이 저장소의 스킬, 평가, 문서에 맞는 리뷰 기준입니다.
+  path_instructions:
+    - path: "skills/**"
+      instructions: |
+        스킬의 사용 시점과 실제 지침이 일치하고 독립적으로 사용할 수 있는지 확인하세요.
+        사용자 요청 범위보다 작업이나 Git·외부 서비스 실행 권한을 임의로 확대하는 지침을 지적하세요.
+        스킬 간 지침 충돌, 존재하지 않는 참조 경로와 근거 없는 완료·검증 주장을 확인하세요.
+        작은 작업에 계획, 문서 또는 테스트를 불필요하게 일률적으로 강제하는 변경을 살펴보세요.
+
+    - path: "tests/behavior/**"
+      instructions: |
+        평가 사례의 입력, 허용된 도구, 성공·실패 기준이 서로 일관되는지 확인하세요.
+        실제 실행 결과와 평가 설계 또는 합성 fixture를 구별하고 실행 근거보다 넓은 주장을 지적하세요.
+        기존의 중요한 실패 조건이나 권한 경계가 의도치 않게 약화되는지 확인하세요.
+
+    - path: "docs/**"
+      instructions: |
+        스킬 이름, 사용 방법과 파일 경로가 현재 저장소와 일치하는지 확인하세요.
+        과거 설계와 현재 동작을 혼동하거나 변경·검증 근거 없이 결과를 단정하는 설명을 지적하세요.
+
+    - path: "README.md"
+      instructions: |
+        스킬 목록, 사용 시점과 설치 안내가 실제 저장소 구조 및 현재 스킬 지침과 일치하는지 확인하세요.
